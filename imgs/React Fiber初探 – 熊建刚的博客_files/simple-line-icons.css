@@ -1,0 +1,294 @@
+@font-face {
+  font-family: 'simple-line-icons';
+  src:  url('simple-line-icons.eot?v=2.2.2');
+  src:  url('simple-line-icons.eot?#iefix&v=2.2.2') format('embedded-opentype'),
+        url('simple-line-icons.ttf?v=2.2.2') format('truetype'),
+        url('simple-line-icons.woff?v=2.2.2') format('woff'),
+        url('simple-line-icons.svg?v=2.2.2#simple-line-icons') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+/*
+ Use the following CSS code if you want to have a class per icon.
+ Instead of a list of all class selectors, you can use the generic [class*="icon-"] selector, but it's slower:
+*/
+[class^="icon-"]:before,
+[class*=" icon-"]:before {
+  font-family: 'simple-line-icons';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 14px;
+  vertical-align: -10%;
+}
+
+.icon-user-alt:before {
+  content: "\61";
+}
+.icon-picture:before {
+  content: "\62";
+}
+.icon-pencil:before {
+  content: "\63";
+}
+.icon-note:before {
+  content: "\64";
+}
+.icon-like:before {
+  content: "\65";
+}
+.icon-dislike:before {
+  content: "\66";
+}
+.icon-arrow-left-circle:before {
+  content: "\67";
+}
+.icon-arrow-right-circle:before {
+  content: "\68";
+}
+.icon-camrecorder:before {
+  content: "\69";
+}
+.icon-camera:before {
+  content: "\6a";
+}
+.icon-bubble:before {
+  content: "\6b";
+}
+.icon-folder:before {
+  content: "\6c";
+}
+.icon-lock-alt:before {
+  content: "\6d";
+}
+.icon-link:before {
+  content: "\6e";
+}
+.icon-magnifier:before {
+  content: "\6f";
+}
+.icon-arrow-right:before {
+  content: "\70";
+}
+.icon-arrow-left:before {
+  content: "\71";
+}
+.icon-arrow-down:before {
+  content: "\72";
+}
+.icon-arrow-up:before {
+  content: "\73";
+}
+.icon-menu:before {
+  content: "\74";
+}
+.icon-refresh:before {
+  content: "\75";
+}
+.icon-settings:before {
+  content: "\76";
+}
+.icon-star:before {
+  content: "\77";
+}
+.icon-music-tone-alt:before {
+  content: "\78";
+}
+.icon-tag:before {
+  content: "\79";
+}
+.icon-support:before {
+  content: "\7a";
+}
+.icon-bubbles:before {
+  content: "\41";
+}
+.icon-emotsmile:before {
+  content: "\42";
+}
+.icon-chemistry:before {
+  content: "\43";
+}
+.icon-speech:before {
+  content: "\44";
+}
+.icon-basket:before {
+  content: "\45";
+}
+.icon-basket-loaded:before {
+  content: "\46";
+}
+.icon-share-alt:before {
+  content: "\47";
+}
+.icon-question:before {
+  content: "\48";
+}
+.icon-pin:before {
+  content: "\49";
+}
+.icon-present:before {
+  content: "\4a";
+}
+.icon-handbag:before {
+  content: "\4b";
+}
+.icon-control-play:before {
+  content: "\4c";
+}
+.icon-cloud-download:before {
+  content: "\4d";
+}
+.icon-cloud-upload:before {
+  content: "\4e";
+}
+.icon-grid:before {
+  content: "\4f";
+}
+.icon-credit-card:before {
+  content: "\50";
+}
+.icon-envelope:before {
+  content: "\51";
+}
+.icon-flag:before {
+  content: "\52";
+}
+.icon-heart:before {
+  content: "\53";
+}
+.icon-info:before {
+  content: "\54";
+}
+.icon-globe:before {
+  content: "\55";
+}
+.icon-twitter:before {
+  content: "\56";
+}
+.icon-facebook:before {
+  content: "\57";
+}
+.icon-youtube:before {
+  content: "\58";
+}
+.icon-instagram:before {
+  content: "\59";
+}
+.icon-dribbble:before {
+  content: "\5a";
+}
+.icon-paypal:before {
+  content: "\31";
+}
+.icon-pinterest:before {
+  content: "\32";
+}
+.icon-whatsapp:before {
+  content: "\33";
+}
+.icon-amazon:before {
+  content: "\34";
+}
+.icon-stumbleupon:before {
+  content: "\35";
+}
+.icon-behance:before {
+  content: "\36";
+}
+.icon-tumblr:before {
+  content: "\37";
+}
+.icon-flickr:before {
+  content: "\38";
+}
+.icon-linkedin:before {
+  content: "\39";
+}
+.icon-googleplus:before {
+  content: "\21";
+}
+.icon-medium:before {
+  content: "\30";
+}
+.icon-home:before {
+  content: "\22";
+}
+.icon-quote:before {
+  content: "\23";
+}
+.icon-lock:before {
+  content: "\24";
+}
+.icon-user:before {
+  content: "\25";
+}
+.icon-clock:before {
+  content: "\26";
+}
+.icon-check:before {
+  content: "\27";
+}
+.icon-rss:before {
+  content: "\28";
+}
+.icon-screen-smartphone:before {
+  content: "\29";
+}
+.icon-book-open:before {
+  content: "\2a";
+}
+.icon-graph:before {
+  content: "\2b";
+}
+.icon-puzzle:before {
+  content: "\2c";
+}
+.icon-screen-desktop:before {
+  content: "\2d";
+}
+.icon-screen-tablet:before {
+  content: "\2e";
+}
+.icon-wrench:before {
+  content: "\2f";
+}
+.icon-chart:before {
+  content: "\3a";
+}
+.icon-bulb:before {
+  content: "\3b";
+}
+.icon-equalizer:before {
+  content: "\3c";
+}
+.icon-briefcase:before {
+  content: "\3d";
+}
+.icon-rocket:before {
+  content: "\3e";
+}
+.icon-magic-wand:before {
+  content: "\3f";
+}
+.icon-doc:before {
+  content: "\40";
+}
+.icon-drop:before {
+  content: "\5b";
+}
+.icon-close:before {
+  content: "\5d";
+}
+.icon-arrow-right2:before {
+  content: "\5e";
+}
+.icon-arrow-left2:before {
+  content: "\5f";
+}
