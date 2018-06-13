@@ -47,7 +47,55 @@ export default function compose(...funcs) {
   return funcs.reduce((a, b) => (...args) => a(b(...args)))
 }
 // 这个函数最终所达到的效果是: compose(f, g, h)(...arg) => f(g(h(...args)))
+
+// 下面这个解释来自知乎https://www.zhihu.com/question/66924637/answer/307299987
+// reduce执行过程
+// loop1: a = f1, b = f2, ret1 = (...args) => f1(f2(...args))
+// loop2: a = ret1, b = f3, ret2 = (...args) => ret1(f3(...args)) , 即 ret2 = (...args) => f1(f2(f3(...args)))
+
+
+//下面这个解释同样来自知乎https://zhuanlan.zhihu.com/p/37662980
+//看完这两个解释终于彻底明白了这个函数,另外对函数式编程也有了新的认识
+//1 a现在是(...args) = > func1(func2(...args)))
+//2 b现在是func3
+//3 a是要执行一下的，并且它的输入参数就是func3(...args),所以最终就变成了
+//(...args) => func1(func2(func3(...args)))
+
+
 ```
+
+为了搞明白这个过程自己写了段简单的代码来验证:
+
+```JavaScript
+const arg=[1,2]
+function compose(...funcs){
+    if(funcs.length===0){
+        return arg=>arg;
+    }
+    if(funcs.length===1){
+        return funcs[0];
+    }
+    return funcs.reduce((a,b) => (arg) => {
+        a(b(arg));
+        console.log(a.name,b.name);
+        console.log(a,b);
+    });
+}
+function f(arg){
+    console.log('f');
+}
+function g(arg){
+    console.log('g');
+}
+function h(arg){
+    console.log('h',arg);
+}
+console.log(compose(f,g,h)(arg))
+```
+
+下面是在chrome开发者工具中的输出:
+
+![1528896709257](/tmp/1528896709257.png)
 
 ### 2. createStore(reducer,initialState,enhancer)
 
