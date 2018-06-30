@@ -1,6 +1,10 @@
+> 来自http://106.14.185.196/zt/js-redux.html
+
 <section class="normal markdown-section">
-                                
-                                <h1 id="react-redux_之_connect_方法详解">react-redux 之 connect 方法详解</h1>
+                          
+
+<h1 id="react-redux_之_connect_方法详解">react-redux 之 connect 方法详解</h1>
+
 <p><img src="http://img.alicdn.com/tfs/TB1fYYeLpXXXXbtXFXXXXXXXXXX-900-500.jpg" alt="React 实践心得：react-redux 之 connect 方法详解"></p>
 <p>Redux 是「React 全家桶」中极为重要的一员，它试图为 React 应用提供「可预测化的状态管理」机制。Redux 本身足够简单，除了 React，它还能够支持其他界面框架。所以如果要将 Redux 和 React 结合起来使用，就还需要一些额外的工具，其中最重要的莫过于 react-redux 了。</p>
 <p>react-redux 提供了两个重要的对象，<code>Provider</code> 和 <code>connect</code>，前者使 React 组件可被连接（connectable），后者把 React 组件和 Redux 的 store 真正连接起来。react-redux 的文档中，对 <code>connect</code> 的描述是一段晦涩难懂的英文，在初学 redux 的时候，我对着这段文档阅读了很久，都没有全部弄明白其中的意思（大概就是，单词我都认识，连起来啥意思就不明白了的感觉吧）。</p>
