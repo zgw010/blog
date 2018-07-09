@@ -5,3 +5,6 @@
 [如何避免async/await地狱](https://www.zcfy.cc/article/how-to-escape-async-await-hell)
 
 [你可能不需要派生状态](https://www.zcfy.cc/article/you-probably-don-t-need-derived-state)
+
+[什么是Native、Web App、Hybrid、React Native 和 Weex？](https://segmentfault.com/a/1190000011154120)
+

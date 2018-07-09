@@ -167,3 +167,32 @@ setInterval(tick, 1000);
 //ok,第一部分完成!
 ```
 
+# 组件和生命周期
+
+我们的createElement长这个样子
+
+```js
+function createElement(tag,attrs,...children){
+  return {
+    tag,
+    attrs,
+    children
+  }
+}
+```
+
+当我们传入一个react组件时,tag就不是一个字符串了,而是一个函数,这个函数就是我们定义tag的函数.
+
+## 组件基类React.Component
+
+ 定义类组件的时候都要继承自React.Component,接下来就实现这个基类.
+
+```js
+class Component {
+    constructor( props = {} ) {
+        this.state = {};
+        this.props = props;
+    }
+}
+```
+
