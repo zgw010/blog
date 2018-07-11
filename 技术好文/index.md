@@ -8,3 +8,4 @@
 
 [什么是Native、Web App、Hybrid、React Native 和 Weex？](https://segmentfault.com/a/1190000011154120)
 
+[promise的实现(Q.js作者的解析)](https://juejin.im/entry/599968f6518825244630f809)

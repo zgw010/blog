@@ -193,3 +193,4 @@ unstable_batchedUpdates(() => {
 
 当然因为这个不是公开的 API，后续存在废弃的风险，大家在业务系统里慎用哟！
 
+> dan 关于setState为什么是异步的解释https://github.com/facebook/react/issues/11527 
