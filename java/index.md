@@ -15,15 +15,19 @@
 
 一个类只能有一个父类，不可以有多个父类。
 
-class SubDemo extends Demo{} //ok
+```class SubDemo extends Demo{} //ok
 
 class SubDemo extends Demo1,Demo2...//error
+```
+
 - Java支持多层继承(继承体系)
 
+```
 class A{}
 class B extends A{}
 
 class C extends B{}
+```
 
 ## 继承的注意事项
 
@@ -34,7 +38,7 @@ class C extends B{}
 - 我们到底在什么时候使用继承呢?
 (继承中类之间体现的是：”is a”的关系。)
 
-![](https://imgchr.com/i/PQ344x)
+![]("https://imgchr.com/i/PQ344x")
 
 # Java 多态
 
