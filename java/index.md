@@ -33,6 +33,7 @@ class C extends B{}
 - 不要为了部分功能而去继承
 - 我们到底在什么时候使用继承呢?
 (继承中类之间体现的是：”is a”的关系。)
+
 ![](https://imgchr.com/i/PQ344x)
 
 # Java 多态
