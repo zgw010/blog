@@ -38,7 +38,7 @@ class C extends B{}
 - 我们到底在什么时候使用继承呢?
 (继承中类之间体现的是：”is a”的关系。)
 
-![]("https://imgchr.com/i/PQ344x")
+![](https://s1.ax1x.com/2018/07/16/PQ344x.png)
 
 # Java 多态
 
