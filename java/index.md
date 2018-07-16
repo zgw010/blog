@@ -75,6 +75,8 @@ class C extends B{}
 - 重写
 - 父类引用指向子类对象
 
+这篇博客把多态中的向上转型说的很明白https://blog.csdn.net/tntzs666/article/details/80273986
+
 # Java 抽象类
 
 ------
