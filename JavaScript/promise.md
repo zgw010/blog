@@ -4,7 +4,7 @@
 
 ### 1.Promise的立即执行性
 
-```
+```js
 var p = new Promise(function(resolve, reject){
   console.log("create a promise");
   resolve("success");
@@ -29,7 +29,7 @@ Promise对象表示未来某个将要发生的事件，但在创建（new）Prom
 
 ### 2.Promise 三种状态
 
-```
+```js
 var p1 = new Promise(function(resolve,reject){
   resolve(1);
 });
@@ -163,6 +163,7 @@ Promise对象的then方法返回一个新的Promise对象，因此可以通过�
 
 ```
 var p = new Promise(function(resolve, reject){
+  console.log("ok");
   resolve("success");
 });
 
@@ -176,6 +177,7 @@ console.log("which one is called first ?");
 控制台输出：
 
 ```
+"ok"
 "which one is called first ?"
 "success"
 ```
