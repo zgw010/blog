@@ -86,7 +86,7 @@ p2、p3刚创建完成时，控制台输出的这两台Promise都处于pending�
 
 ### 3.Promise 状态的不可逆性
 
-```
+```js
 var p1 = new Promise(function(resolve, reject){
   resolve("success1");
   resolve("success2");
@@ -161,7 +161,7 @@ Promise对象的then方法返回一个新的Promise对象，因此可以通过�
 
 ### 5.Promise then() 回调异步性
 
-```
+```js
 var p = new Promise(function(resolve, reject){
   console.log("ok");
   resolve("success");
@@ -186,7 +186,7 @@ Promise接收的函数参数是同步执行的，但`then`方法中的回调函�
 
 ### 6.Promise 中的异常
 
-```
+```js
 var p1 = new Promise( function(resolve,reject){
   foo.bar();
   resolve( 1 );	  
@@ -254,7 +254,7 @@ Promise中的异常由`then`参数中第二个回调函数（Promise执行失败
 
 ### 7.Promise.resolve()
 
-```
+```js
 var p1 = Promise.resolve( 1 );
 var p2 = Promise.resolve( p1 );
 var p3 = new Promise(function(resolve, reject){
@@ -302,7 +302,7 @@ p4=1
 
 ### 8.resolve vs reject
 
-```
+```js
 var p1 = new Promise(function(resolve, reject){
   resolve(Promise.resolve('resolve'));
 });
