@@ -686,3 +686,519 @@ var obj = {a: 1, b: {
 // 可以处理 undefined 和循环引用对象
 const clone = await structuralClone(obj);
 ```
+
+#  模块化
+
+在有 Babel 的情况下，我们可以直接使用 ES6 的模块化
+
+```js
+// file a.js
+export function a() {}
+export function b() {}
+// file b.js
+export default function() {}
+
+import {a, b} from './a.js'
+import XXX from './b.js'
+```
+
+## CommonJS
+
+`CommonJs` 是 Node 独有的规范，浏览器中使用就需要用到 `Browserify` 解析了。
+
+```js
+// a.js
+module.exports = {
+    a: 1
+}
+// or
+exports.a = 1
+
+// b.js
+var module = require('./a.js')
+module.a // -> log 1
+```
+
+在上述代码中，`module.exports` 和 `exports` 很容易混淆，让我们来看看大致内部实现
+
+```js
+var module = require('./a.js')
+module.a
+// 这里其实就是包装了一层立即执行函数，这样就不会污染全局变量了，
+// 重要的是 module 这里，module 是 Node 独有的一个变量
+module.exports = {
+    a: 1
+}
+// 基本实现
+var module = {
+  exports: {} // exports 就是个空对象
+}
+// 这个是为什么 exports 和 module.exports 用法相似的原因
+var exports = module.exports
+var load = function (module) {
+    // 导出的东西
+    var a = 1
+    module.exports = a
+    return module.exports
+};
+```
+
+再来说说 `module.exports` 和 `exports`，用法其实是相似的，但是不能对 `exports` 直接赋值，不会有任何效果。
+
+对于 `CommonJS` 和 ES6 中的模块化的两者区别是：
+
+- 前者支持动态导入，也就是 `require(${path}/xx.js)`，后者目前不支持，但是已有提案
+- 前者是同步导入，因为用于服务端，文件都在本地，同步导入即使卡住主线程影响也不大。而后者是异步导入，因为用于浏览器，需要下载文件，如果也采用导入会对渲染有很大影响
+- 前者在导出时都是值拷贝，就算导出的值变了，导入的值也不会改变，所以如果想更新值，必须重新导入一次。但是后者采用实时绑定的方式，导入导出的值都指向同一个内存地址，所以导入值会跟随导出值变化
+- 后者会编译成 `require/exports` 来执行的
+
+## AMD
+
+AMD 是由 `RequireJS` 提出的.这个方案主要解决前端动态加载依赖，相比 commonJs，体积更小，按需加载。
+
+```js
+// AMD
+define(['./a', './b'], function(a, b) {
+    a.do()
+    b.do()
+})
+define(function(require, exports, module) {   
+    var a = require('./a')  
+    a.doSomething()   
+    var b = require('./b')
+    b.doSomething()
+})
+```
+# 防抖
+
+你是否在日常开发中遇到一个问题，在滚动事件中需要做个复杂计算或者实现一个按钮的防二次点击操作。
+
+这些需求都可以通过函数防抖动来实现。尤其是第一个需求，如果在频繁的事件回调中做复杂计算，很有可能导致页面卡顿，不如将多次计算合并为一次计算，只在一个精确点做操作。因为防抖动的轮子很多，这里也不重新自己造个轮子了，直接使用 underscore 的源码来解释防抖动。
+
+```js
+/**
+ * underscore 防抖函数，返回函数连续调用时，空闲时间必须大于或等于 wait，func 才会执行
+ *
+ * @param  {function} func        回调函数
+ * @param  {number}   wait        表示时间窗口的间隔
+ * @param  {boolean}  immediate   设置为ture时，是否立即调用函数
+ * @return {function}             返回客户调用函数
+ */
+_.debounce = function(func, wait, immediate) {
+    var timeout, args, context, timestamp, result;
+
+    var later = function() {
+      // 现在和上一次时间戳比较
+      var last = _.now() - timestamp;
+      // 如果当前间隔时间少于设定时间且大于0就重新设置定时器
+      if (last < wait && last >= 0) {
+        timeout = setTimeout(later, wait - last);
+      } else {
+        // 否则的话就是时间到了执行回调函数
+        timeout = null;
+        if (!immediate) {
+          result = func.apply(context, args);
+          if (!timeout) context = args = null;
+        }
+      }
+    };
+
+    return function() {
+      context = this;
+      args = arguments;
+      // 获得时间戳
+      timestamp = _.now();
+      // 如果定时器不存在且立即执行函数
+      var callNow = immediate && !timeout;
+      // 如果定时器不存在就创建一个
+      if (!timeout) timeout = setTimeout(later, wait);
+      if (callNow) {
+        // 如果需要立即执行函数的话 通过 apply 执行
+        result = func.apply(context, args);
+        context = args = null;
+      }
+
+      return result;
+    };
+  };
+```
+
+整体函数实现的不难，总结一下。
+
+- 对于按钮防点击来说的实现：一旦我开始一个定时器，只要我定时器还在，不管你怎么点击都不会执行回调函数。一旦定时器结束并设置为 `null`，就可以再次点击了。
+- 对于延时执行函数来说的实现：每次调用防抖动函数都会判断本次调用和之前的时间间隔，如果小于需要的时间间隔，就会重新创建一个定时器，并且定时器的延时为设定时间减去之前的时间间隔。一旦时间到了，就会执行相应的回调函数。
+
+# 节流
+
+防抖动和节流本质是不一样的。防抖动是将多次执行变为最后一次执行，节流是将多次执行变成每隔一段时间执行。
+
+```js
+/**
+ * underscore 节流函数，返回函数连续调用时，func 执行频率限定为 次 / wait
+ *
+ * @param  {function}   func      回调函数
+ * @param  {number}     wait      表示时间窗口的间隔
+ * @param  {object}     options   如果想忽略开始函数的的调用，传入{leading: false}。
+ *                                如果想忽略结尾函数的调用，传入{trailing: false}
+ *                                两者不能共存，否则函数不能执行
+ * @return {function}             返回客户调用函数   
+ */
+_.throttle = function(func, wait, options) {
+    var context, args, result;
+    var timeout = null;
+    // 之前的时间戳
+    var previous = 0;
+    // 如果 options 没传则设为空对象
+    if (!options) options = {};
+    // 定时器回调函数
+    var later = function() {
+      // 如果设置了 leading，就将 previous 设为 0
+      // 用于下面函数的第一个 if 判断
+      previous = options.leading === false ? 0 : _.now();
+      // 置空一是为了防止内存泄漏，二是为了下面的定时器判断
+      timeout = null;
+      result = func.apply(context, args);
+      if (!timeout) context = args = null;
+    };
+    return function() {
+      // 获得当前时间戳
+      var now = _.now();
+      // 首次进入前者肯定为 true
+	  // 如果需要第一次不执行函数
+	  // 就将上次时间戳设为当前的
+      // 这样在接下来计算 remaining 的值时会大于0
+      if (!previous && options.leading === false) previous = now;
+      // 计算剩余时间
+      var remaining = wait - (now - previous);
+      context = this;
+      args = arguments;
+      // 如果当前调用已经大于上次调用时间 + wait
+      // 或者用户手动调了时间
+ 	  // 如果设置了 trailing，只会进入这个条件
+	  // 如果没有设置 leading，那么第一次会进入这个条件
+	  // 还有一点，你可能会觉得开启了定时器那么应该不会进入这个 if 条件了
+	  // 其实还是会进入的，因为定时器的延时
+	  // 并不是准确的时间，很可能你设置了2秒
+	  // 但是他需要2.2秒才触发，这时候就会进入这个条件
+      if (remaining <= 0 || remaining > wait) {
+        // 如果存在定时器就清理掉否则会调用二次回调
+        if (timeout) {
+          clearTimeout(timeout);
+          timeout = null;
+        }
+        previous = now;
+        result = func.apply(context, args);
+        if (!timeout) context = args = null;
+      } else if (!timeout && options.trailing !== false) {
+        // 判断是否设置了定时器和 trailing
+	    // 没有的话就开启一个定时器
+        // 并且不能不能同时设置 leading 和 trailing
+        timeout = setTimeout(later, remaining);
+      }
+      return result;
+    };
+  };
+```
+
+# 继承
+
+## 1.原型链继承
+
+```js
+function Parent () {
+    this.name = 'kevin';
+}
+
+Parent.prototype.getName = function () {
+    console.log(this.name);
+}
+
+function Child () {
+
+}
+
+Child.prototype = new Parent();
+
+var child1 = new Child();
+
+console.log(child1.getName()) // kevin
+```
+
+问题：
+
+1.引用类型的属性被所有实例共享，举个例子：
+
+```js
+function Parent () {
+    this.names = ['kevin', 'daisy'];
+}
+
+function Child () {
+
+}
+
+Child.prototype = new Parent();
+
+var child1 = new Child();
+
+child1.names.push('yayu');
+
+console.log(child1.names); // ["kevin", "daisy", "yayu"]
+
+var child2 = new Child();
+
+console.log(child2.names); // ["kevin", "daisy", "yayu"]
+```
+
+2.在创建 Child 的实例时，不能向Parent传参
+
+## 2.借用构造函数(经典继承)
+
+```js
+function Parent () {
+    this.names = ['kevin', 'daisy'];
+}
+
+function Child () {
+    Parent.call(this);
+}
+
+var child1 = new Child();
+
+child1.names.push('yayu');
+
+console.log(child1.names); // ["kevin", "daisy", "yayu"]
+
+var child2 = new Child();
+
+console.log(child2.names); // ["kevin", "daisy"]
+```
+
+优点：
+
+1.避免了引用类型的属性被所有实例共享
+
+2.可以在 Child 中向 Parent 传参
+
+举个例子：
+
+```js
+function Parent (name) {
+    this.name = name;
+}
+
+function Child (name) {
+    Parent.call(this, name);
+}
+
+var child1 = new Child('kevin');
+
+console.log(child1.name); // kevin
+
+var child2 = new Child('daisy');
+
+console.log(child2.name); // daisy
+```
+
+缺点：
+
+方法都在构造函数中定义，每次创建实例都会创建一遍方法。
+
+## 3.组合继承
+
+原型链继承和经典继承双剑合璧。
+
+```js
+function Parent (name) {
+    this.name = name;
+    this.colors = ['red', 'blue', 'green'];
+}
+
+Parent.prototype.getName = function () {
+    console.log(this.name)
+}
+
+function Child (name, age) {
+
+    Parent.call(this, name);
+    
+    this.age = age;
+
+}
+
+Child.prototype = new Parent();
+Child.prototype.constructor = Child;
+
+var child1 = new Child('kevin', '18');
+
+child1.colors.push('black');
+
+console.log(child1.name); // kevin
+console.log(child1.age); // 18
+console.log(child1.colors); // ["red", "blue", "green", "black"]
+
+var child2 = new Child('daisy', '20');
+
+console.log(child2.name); // daisy
+console.log(child2.age); // 20
+console.log(child2.colors); // ["red", "blue", "green"]
+```
+
+优点：融合原型链继承和构造函数的优点，是 JavaScript 中最常用的继承模式。
+
+## 4.原型式继承
+
+```js
+function createObj(o) {
+    function F(){}
+    F.prototype = o;
+    return new F();
+}
+```
+
+就是 ES5 Object.create 的模拟实现，将传入的对象作为创建的对象的原型。
+
+缺点：
+
+包含引用类型的属性值始终都会共享相应的值，这点跟原型链继承一样。
+
+```js
+var person = {
+    name: 'kevin',
+    friends: ['daisy', 'kelly']
+}
+
+var person1 = createObj(person);
+var person2 = createObj(person);
+
+person1.name = 'person1';
+console.log(person2.name); // kevin
+
+person1.firends.push('taylor');
+console.log(person2.friends); // ["daisy", "kelly", "taylor"]
+```
+
+注意：修改`person1.name`的值，`person2.name`的值并未发生改变，并不是因为`person1`和`person2`有独立的 name 值，而是因为`person1.name = 'person1'`，给`person1`添加了 name 值，并非修改了原型上的 name 值。
+
+## 5. 寄生式继承
+
+创建一个仅用于封装继承过程的函数，该函数在内部以某种形式来做增强对象，最后返回对象。
+
+```
+function createObj (o) {
+    var clone = Object.create(o);
+    clone.sayName = function () {
+        console.log('hi');
+    }
+    return clone;
+}
+```
+
+缺点：跟借用构造函数模式一样，每次创建对象都会创建一遍方法。
+
+## 6. 寄生组合式继承
+
+为了方便大家阅读，在这里重复一下组合继承的代码：
+
+```
+function Parent (name) {
+    this.name = name;
+    this.colors = ['red', 'blue', 'green'];
+}
+
+Parent.prototype.getName = function () {
+    console.log(this.name)
+}
+
+function Child (name, age) {
+    Parent.call(this, name);
+    this.age = age;
+}
+
+Child.prototype = new Parent();
+
+var child1 = new Child('kevin', '18');
+
+console.log(child1)
+```
+
+组合继承最大的缺点是会调用两次父构造函数。
+
+一次是设置子类型实例的原型的时候：
+
+```
+Child.prototype = new Parent();
+```
+
+一次在创建子类型实例的时候：
+
+```
+var child1 = new Child('kevin', '18');
+```
+
+回想下 new 的模拟实现，其实在这句中，我们会执行：
+
+```
+Parent.call(this, name);
+```
+
+在这里，我们又会调用了一次 Parent 构造函数。
+
+所以，在这个例子中，如果我们打印 child1 对象，我们会发现 Child.prototype 和 child1 都有一个属性为`colors`，属性值为`['red', 'blue', 'green']`。
+
+那么我们该如何精益求精，避免这一次重复调用呢？
+
+如果我们不使用 Child.prototype = new Parent() ，而是间接的让 Child.prototype 访问到 Parent.prototype 呢？
+
+看看如何实现：
+
+```
+function Parent (name) {
+    this.name = name;
+    this.colors = ['red', 'blue', 'green'];
+}
+
+Parent.prototype.getName = function () {
+    console.log(this.name)
+}
+
+function Child (name, age) {
+    Parent.call(this, name);
+    this.age = age;
+}
+
+// 关键的三步
+var F = function () {};
+
+F.prototype = Parent.prototype;
+
+Child.prototype = new F();
+
+
+var child1 = new Child('kevin', '18');
+
+console.log(child1);
+```
+
+最后我们封装一下这个继承方法：
+
+```
+function object(o) {
+    function F() {}
+    F.prototype = o;
+    return new F();
+}
+
+function prototype(child, parent) {
+    var prototype = object(parent.prototype);
+    prototype.constructor = child;
+    child.prototype = prototype;
+}
+
+// 当我们使用的时候：
+prototype(Child, Parent);
+```
+
+引用《JavaScript高级程序设计》中对寄生组合式继承的夸赞就是：
+
+这种方式的高效率体现它只调用了一次 Parent 构造函数，并且因此避免了在 Parent.prototype 上面创建不必要的、多余的属性。与此同时，原型链还能保持不变；因此，还能够正常使用 instanceof 和 isPrototypeOf。开发人员普遍认为寄生组合式继承是引用类型最理想的继承范式。
