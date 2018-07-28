@@ -48,7 +48,7 @@ handler 对象是一个占位符对象，它包含`Proxy`的陷阱。
 
 在以下简单的例子中，当对象中不存在属性名时，缺省返回数为`37`。例子中使用了 [`get`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Proxy/handler/get)。
 
-```
+```js
 let handler = {
     get: function(target, name){
         return name in target ? target[name] : 37;
