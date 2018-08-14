@@ -197,7 +197,7 @@ css3提供的选择器可以让我们的开发，下面是css3提供的选择器
 
 图片来自w3c。（[CSS 选择器参考手册](https://link.juejin.im/?target=http%3A%2F%2Fwww.w3school.com.cn%2Fcssref%2Fcss_selectors.asp)）
 
-# BFC
+## BFC
 
 https://juejin.im/post/59b73d5bf265da064618731d
 
@@ -691,7 +691,9 @@ http://www.cnblogs.com/lyzg/p/5125934.html
 
 https://juejin.im/post/5a99f80cf265da238c3a1e16
 
-# 浏览器渲染原理
+# 浏览器
+
+## 浏览器渲染原理
 
 浏览器渲染展示网页的过程，老生常谈，面试必问，大致分为：
 
@@ -716,17 +718,17 @@ https://juejin.im/post/5a99f80cf265da238c3a1e16
 
 GraphicsLayer 层是作为纹理(texture)上传给 GPU 的。
 
-## 1. 回流（reflow）与重绘（repaint）
+### 1. 回流（reflow）与重绘（repaint）
 
 这里首先要分清两个概念，重绘与回流。
 
-### 1.1. 回流（reflow）
+#### 1.1. 回流（reflow）
 
 当渲染树（render Tree）中的一部分(或全部)因为元素的规模尺寸，布局，隐藏等改变而需要重新构建。这就称为回流（reflow），也就是重新布局（relayout）。
 
 每个页面至少需要一次回流，就是在页面第一次加载的时候。在回流的时候，浏览器会使渲染树中受到影响的部分失效，并重新构造这部分渲染树，完成回流后，浏览器会重新绘制受影响的部分到屏幕中，该过程成为重绘。
 
-### 1.2. 重绘（repaint）
+#### 1.2. 重绘（repaint）
 
 当render tree中的一些元素需要更新属性，而这些属性只是影响元素的外观，风格，而不会影响布局的，比如 background-color 。则就叫称为重绘。
 
@@ -734,7 +736,7 @@ GraphicsLayer 层是作为纹理(texture)上传给 GPU 的。
 
 明显，回流的代价更大，简单而言，当操作元素会使元素修改它的大小或位置，那么就会发生回流。
 
-### 1.3. 回流何时触发：
+#### 1.3. 回流何时触发：
 
 - 调整窗口大小（Resizing the window）
 - 改变字体（Changing the font）
@@ -753,7 +755,7 @@ GraphicsLayer 层是作为纹理(texture)上传给 GPU 的。
 
 减少回流、重绘其实就是需要减少对渲染树的操作（合并多次多DOM和样式的修改），并减少对一些style信息的请求，尽量利用好浏览器的优化策略。
 
-### 1.4. flush队列
+#### 1.4. flush队列
 
 其实浏览器自身是有优化策略的，如果每句 Javascript 都去操作 DOM 使之进行回流重绘的话，浏览器可能就会受不了。所以很多浏览器都会优化这些操作，浏览器会维护 1 个队列，把所有会引起回流、重绘的操作放入这个队列，等队列中的操作到了一定的数量或者到了一定的时间间隔，浏览器就会 flush 队列，进行一个批处理。这样就会让多次的回流、重绘变成一次回流重绘。
 
@@ -771,7 +773,7 @@ GraphicsLayer 层是作为纹理(texture)上传给 GPU 的。
 
 这个时候，浏览器为了反馈最精确的信息，需要立即回流重绘一次，确保给到我们的信息是准确的，所以可能导致 flush 队列提前执行了。
 
-### 1.5. display:none 与 visibility:hidden 的异同
+#### 1.5. display:none 与 visibility:hidden 的异同
 
 两者都可以在页面上隐藏节点。不同之处在于，
 
@@ -790,8 +792,32 @@ GraphicsLayer 层是作为纹理(texture)上传给 GPU 的。
 - display:none 一旦父节点元素应用了 display:none，父节点及其子孙节点元素全部不可见，而且无论其子孙元素如何设置 display 值都无法显示；
 - visibility:hidden 一旦父节点元素应用了 visibility:hidden，则其子孙后代也都会全部不可见。不过存在隐藏“失效”的情况。当其子孙元素应用了 visibility:visible，那么这个子孙元素又会显现出来。
 
-### 1.6. 使用 transform3d api 代替 transform api，强制开始 GPU 加速
+#### 1.6. 使用 transform3d api 代替 transform api，强制开始 GPU 加速
 
 GPU 能够加速 Web 动画，这个上文已经反复提到了。
 
 3D transform 会启用GPU加速，例如 translate3D, scaleZ 之类，当然我们的页面可能并没有 3D 变换，但是不代表我们不能启用 GPU 加速，在非 3D 变换的页面也使用 3D transform 来操作，算是一种 hack 加速法。我们实际上不需要z轴的变化，但是还是假模假样地声明了，去欺骗浏览器。
+
+# HTTP
+
+## [聊一聊session和cookie](https://juejin.im/post/5aede266f265da0ba266e0ef)
+
+## get和post的区别
+
+|                  | GET                                                          | POST                                                         |
+| ---------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| 后退按钮/刷新    | 无害                                                         | 数据会被重新提交（浏览器应该告知用户数据会被重新提交）。     |
+| 书签             | 可收藏为书签                                                 | 不可收藏为书签                                               |
+| 缓存             | 能被缓存                                                     | 不能缓存                                                     |
+| 编码类型         | application/x-www-form-urlencoded                            | application/x-www-form-urlencoded 或 multipart/form-data。为二进制数据使用多重编码。 |
+| 历史             | 参数保留在浏览器历史中。                                     | 参数不会保存在浏览器历史中。                                 |
+| 对数据长度的限制 | 是的。当发送数据时，GET 方法向 URL 添加数据；URL 的长度是受限制的（URL 的最大长度是 2048 个字符）。 | 无限制。                                                     |
+| 对数据类型的限制 | 只允许 ASCII 字符。                                          | 没有限制。也允许二进制数据。                                 |
+| 安全性           | 与 POST 相比，GET 的安全性较差，因为所发送的数据是 URL 的一部分。在发送密码或其他敏感信息时绝不要使用 GET ！ | POST 比 GET 更安全，因为参数不会被保存在浏览器历史或 web 服务器日志中。 |
+| 可见性           | 数据在 URL 中对所有人都是可见的。                            | 数据不会显示在 URL 中。                                      |
+
+GET的语义是请求获取指定的资源。GET方法是安全、幂等、可缓存的（除非有 Cache-ControlHeader的约束）,GET方法的报文主体没有任何语义。
+
+POST的语义是根据请求负荷（报文主体）对指定的资源做出处理，具体的处理方式视资源类型而不同。POST不安全，不幂等，（大部分实现）不可缓存。为了针对其不可缓存性，有一系列的方法来进行优化。
+
+还是举一个通俗栗子吧，在微博这个场景里，GET的语义会被用在「看看我的Timeline上最新的20条微博」这样的场景，而POST的语义会被用在「发微博、评论、点赞」这样的场景中。
