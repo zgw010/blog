@@ -14,9 +14,13 @@
 | 297  | [Serialize and Deserialize Binary Tree](./297.md)            | Hard       | 树          |
 | 300  | [Longest Increasing Subsequence](./300.md)                   | Medium     |             |
 | 301  | [Remove Invalid Parentheses](./301.md)                       | Hard       | DFS,z       |
+| 309  | [Best Time to Buy and Sell Stock with Cooldown](./309.md)    | Medium     | dp,z,s      |
 | 877  | [Stone Game](https://leetcode.com/problems/stone-game/description/) | Medium     |             |
 |      |                                                              |            |             |
 |      |                                                              |            |             |
 |      |                                                              |            |             |
 |      |                                                              |            |             |
 
+z:智商题
+
+s:典型算法,适合重新刷
