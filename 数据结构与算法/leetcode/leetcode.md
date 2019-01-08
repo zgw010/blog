@@ -16,6 +16,7 @@
 | 301  | [Remove Invalid Parentheses](./301.md)                       | Hard           | DFS,z       |
 | 309  | [Best Time to Buy and Sell Stock with Cooldown](./309.md)    | Medium         | dp,z,s      |
 | 437  | [Path Sum III](./437.md)                                     |                | tree,s      |
+| 461  | [Hamming Distance](./461.md)                                 |                | b           |
 | 581  | [Shortest Unsorted Continuous Subarray](./581.md)            | Easy(并不easy) | z           |
 | 877  | [Stone Game](https://leetcode.com/problems/stone-game/description/) | Medium         |             |
 |      |                                                              |                |             |
@@ -26,3 +27,5 @@
 z:智商题
 
 s:典型算法,适合重新刷
+
+b:二进制
