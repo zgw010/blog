@@ -14,6 +14,7 @@
 | 297  | [Serialize and Deserialize Binary Tree](./297.md)            | Hard           | 树          |
 | 300  | [Longest Increasing Subsequence](./300.md)                   | Medium         |             |
 | 301  | [Remove Invalid Parentheses](./301.md)                       | Hard           | DFS,z       |
+| 312  | [Burst Balloons](./312.md)                                   | Hard           | dp,s,分治   |
 | 309  | [Best Time to Buy and Sell Stock with Cooldown](./309.md)    | Medium         | dp,z,s      |
 | 437  | [Path Sum III](./437.md)                                     |                | tree,s      |
 | 461  | [Hamming Distance](./461.md)                                 |                | b           |
