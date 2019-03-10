@@ -1,4 +1,4 @@
-隐藏上边栏
+### 隐藏上边栏
 
 css修改
 
@@ -12,7 +12,7 @@ css修改
 }
 ```
 
-从桌面上永久隐藏 Ubuntu Dock，而不是将其删除
+### 从桌面上永久隐藏 Ubuntu Dock，而不是将其删除
 
 如果你希望永久隐藏 Ubuntu Dock，不让它显示在桌面上，但不删除它或使用原生 Gnome 会话，你可以使用 Dconf 编辑器轻松完成此操作。这样做的缺点是 Ubuntu Dock 仍然会使用一些系统资源，即使你没有在桌面上使用它，但你也可以轻松恢复它而无需安装或删除任何包。
 
@@ -35,4 +35,10 @@ gsettings set org.gnome.shell.extensions.dash-to-dock autohide true
 gsettings set org.gnome.shell.extensions.dash-to-dock dock-fixed true
 
 gsettings set org.gnome.shell.extensions.dash-to-dock intellihide true
+```
+### 更新vscode
+```
+wget https://vscode-update.azurewebsites.net/latest/linux-deb-x64/stable -O /tmp/code_latest_amd64.deb
+
+sudo dpkg -i /tmp/code_latest_amd64.deb
 ```
