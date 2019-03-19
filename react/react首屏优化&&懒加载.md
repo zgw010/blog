@@ -38,6 +38,8 @@
 
 ## Code Splitting
 Code Splitting 可以帮你“懒加载”代码，以提高用户的加载体验，如果你没办法直接减少应用的体积，那么不妨尝试把应用从单个 bundle 拆分成单个 bundle + 多份动态代码的形式。
+
+关于代码分割,react 官网有很详细的介绍: https://zh-hans.reactjs.org/docs/code-splitting.html
 ## LazyLoad
 
 可以直接使用现成的 [react-lazyload](https://github.com/twobin/react-lazyload) 库
@@ -121,7 +123,7 @@ new webpack.optimize.UglifyJsPlugin({
 })
 ```
 ## 通过webpack实现按需加载
-通过与react－router＋webpack配合我们可以实现按需加载（react router文档传送门），上一段代码：
+通过与react－router＋webpack配合我们可以实现按需加载，上一段代码：
 ```jsx
 <Route path='/message' getComponent={
   (nextState ,cb) => {
@@ -147,6 +149,7 @@ output:{
 
 参考链接:
 
+https://zh-hans.reactjs.org/docs/code-splitting.html
 https://juejin.im/entry/5b03afd351882542ac7d9291
 https://www.jianshu.com/p/a72b1c9d8c32
 https://juejin.im/post/5c31a45df265da61193bfc7e
