@@ -1,3 +1,137 @@
+*基于 React 版本 v 15.6*
+
+```js
+ReactComponent.prototype.setState = function(partialState, callback) {
+  invariant(
+    typeof partialState === 'object' ||
+      typeof partialState === 'function' ||
+      partialState == null,
+    'setState(...): takes an object of state variables to update or a ' +
+      'function which returns an object of state variables.',
+  );
+  this.updater.enqueueSetState(this, partialState);
+  if (callback) {
+    this.updater.enqueueCallback(this, callback, 'setState');
+  }
+};
+
+--------------------------------------------------------
+  
+enqueueSetState: function(publicInstance, partialState) {
+  if (__DEV__) {
+    // This code will only run in development.
+    ReactInstrumentation.debugTool.onSetState();
+    warning(
+      partialState != null,
+      'setState(...): You passed an undefined or null state object; ' +
+        'instead, use forceUpdate().',
+    );
+  }
+
+  var internalInstance = getInternalInstanceReadyForUpdate(
+    publicInstance,
+    'setState',
+  );
+
+  if (!internalInstance) {
+    return;
+  }
+
+  var queue =
+    internalInstance._pendingStateQueue ||
+    (internalInstance._pendingStateQueue = []);
+  queue.push(partialState);
+
+  enqueueUpdate(internalInstance);
+  // function enqueueUpdate(internalInstance) {
+  //  ReactUpdates.enqueueUpdate(internalInstance);
+  // }
+}
+-------------------------------------------------
+function getInternalInstanceReadyForUpdate(publicInstance, callerName) {
+  var internalInstance = ReactInstanceMap.get(publicInstance);
+  if (!internalInstance) {
+    if (__DEV__) {
+      var ctor = publicInstance.constructor;
+      // Only warn when we have a callerName. Otherwise we should be silent.
+      // We're probably calling from enqueueCallback. We don't want to warn
+      // there because we already warned for the corresponding lifecycle method.
+      warning(
+        !callerName,
+        '%s(...): Can only update a mounted or mounting component. ' +
+          'This usually means you called %s() on an unmounted component. ' +
+          'This is a no-op. Please check the code for the %s component.',
+        callerName,
+        callerName,
+        (ctor && (ctor.displayName || ctor.name)) || 'ReactClass',
+      );
+    }
+    return null;
+  }
+
+  if (__DEV__) {
+    warning(
+      ReactCurrentOwner.current == null,
+      '%s(...): Cannot update during an existing state transition (such as ' +
+        "within `render` or another component's constructor). Render methods " +
+        'should be a pure function of props and state; constructor ' +
+        'side-effects are an anti-pattern, but can be moved to ' +
+        '`componentWillMount`.',
+      callerName,
+    );
+  }
+
+  return internalInstance;
+}
+---------------------------------------------
+function enqueueUpdate(component) {
+  ensureInjected();
+
+  // Various parts of our code (such as ReactCompositeComponent's
+  // _renderValidatedComponent) assume that calls to render aren't nested;
+  // verify that that's the case. (This is called by each top-level update
+  // function, like setState, forceUpdate, etc.; creation and
+  // destruction of top-level components is guarded in ReactMount.)
+
+  if (!batchingStrategy.isBatchingUpdates) {
+    batchingStrategy.batchedUpdates(enqueueUpdate, component);
+    return;
+  }
+
+  dirtyComponents.push(component);
+  if (component._updateBatchNumber == null) {
+    component._updateBatchNumber = updateBatchNumber + 1;
+  }
+}
+-----------------------------------------------------------
+var ReactDefaultBatchingStrategy = {
+  isBatchingUpdates: false,
+
+  /**
+   * Call the provided function in a context within which calls to `setState`
+   * and friends are batched such that components aren't updated unnecessarily.
+   */
+  batchedUpdates: function(callback, a, b, c, d, e) {
+    var alreadyBatchingUpdates = ReactDefaultBatchingStrategy.isBatchingUpdates;
+
+    ReactDefaultBatchingStrategy.isBatchingUpdates = true;
+
+    // The code is written this way to avoid extra allocations
+    if (alreadyBatchingUpdates) {
+      return callback(a, b, c, d, e);
+    } else {
+      return transaction.perform(callback, null, a, b, c, d, e);
+    }
+  },
+};
+```
+
+
+
+---
+
+
+
 > 来源知乎:https://zhuanlan.zhihu.com/p/20328570?refer=purerender
 
 ## 引子
@@ -194,3 +328,12 @@ unstable_batchedUpdates(() => {
 当然因为这个不是公开的 API，后续存在废弃的风险，大家在业务系统里慎用哟！
 
 > dan 关于setState为什么是异步的解释https://github.com/facebook/react/issues/11527 
+
+
+
+
+
+
+
+
+
