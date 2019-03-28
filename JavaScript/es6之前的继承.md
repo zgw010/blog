@@ -41,3 +41,9 @@ c2.prototype.sayAge = function () {
 // r.sayName();
 // r.sayAge();
 ```
+
+```js
+// 最常用的继承
+Sub.prototype = new Super();
+Sub.prototype.constructor = Sub;
+```
