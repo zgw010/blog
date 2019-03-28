@@ -43,7 +43,7 @@ c2.prototype.sayAge = function () {
 ```
 
 ```js
-// 最常用的继承
+// 最常用的继承, 组合继承
 Sub.prototype = new Super();
 Sub.prototype.constructor = Sub;
 ```
