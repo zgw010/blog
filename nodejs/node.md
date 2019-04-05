@@ -1,9 +1,13 @@
 # Node.js 是一个基于 [Chrome V8](https://v8.dev/) 引擎 的 JavaScript 运行时。
 ## Node.js 核心概念
-### [阻塞对比非阻塞一览](https://nodejs.org/zh-cn/docs/guides/blocking-vs-non-blocking/)
-### [Node.js 事件轮询，定时器 和 process.nextTick()](https://nodejs.org/zh-cn/docs/guides/event-loop-timers-and-nexttick/)
-### [不要阻塞你的事件轮询（或是工作池）](https://nodejs.org/zh-cn/docs/guides/dont-block-the-event-loop/)
-### [Node.js 中的定时器](https://nodejs.org/zh-cn/docs/guides/timers-in-node/)
+
+[阻塞对比非阻塞一览](https://nodejs.org/zh-cn/docs/guides/blocking-vs-non-blocking/)
+
+[Node.js 事件轮询，定时器 和 process.nextTick()](https://nodejs.org/zh-cn/docs/guides/event-loop-timers-and-nexttick/)
+
+[不要阻塞你的事件轮询（或是工作池）](https://nodejs.org/zh-cn/docs/guides/dont-block-the-event-loop/)
+
+[Node.js 中的定时器](https://nodejs.org/zh-cn/docs/guides/timers-in-node/)
 
 要理解事件循环, 首先明白微任务和宏任务有哪些
 
@@ -67,3 +71,39 @@ Node 有两种类型的线程：一个事件循环线程和 k 个工作线程。
 
     `process.nextTick()` 的优先级高于 `setImmediate()` , `process.nextTick()` 的回调函数放在一个数组中,并且在每轮循环中会将数组中的回调函数全部执行完, `setImmediate()` 的结果放在链表里,在每轮循环中只会执行一个回调.
 
+## 内存控制
+### V8的内存限制
+```node
+$ node
+> process.memoryUsage();
+{ rss: 33443840,
+  heapTotal: 9682944,
+  heapUsed: 5330856,
+  external: 9223
+}
+```
+### V8的垃圾回收机制
+1. V8 的垃圾回收策略主要基于分代式垃圾回收机制
+   
+   现代的垃圾回收算法中按对象的存活时间将内存的垃圾回收进行不同的分代,然后分别对不同分代的内存使用更高效的算法
+
+   _V8 的内存分代_
+
+   在 V8 中,主要将内存分为新生代和老生代两代. 新生代中的对象为存活时间较短的对象.老生代中的对象为存活时间较长或常驻内存的对象.新生代 + 老生代的内存空间 = heapTotal
+
+   _Scavenge算法_
+
+   在分代的基础上, 新生代中的对象主要通过 Scavenge 算法进行垃圾回收, Scavenge 算法的具体实现主要采用了 Cheney 算法.
+
+   _Mark-Sweep (标记-清除) & Mark-Compact (标记-整理)_
+   
+   Mark-Sweep 可能会造成内存空间不连续的状况.Mark-Compact 可以将不连续的空间整理到一块连续的空间.
+
+   V8主要使用前者, 因为速度更快.
+
+   _Incremental Marking(增量标记)_
+
+2. 查看垃圾回收日志
+
+    `--trace_gc // 打印垃圾回收的日志信息`
+    `-prof // 得到 V8 执行时的性能分析数据`
