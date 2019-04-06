@@ -137,6 +137,105 @@ os 模块中的 `` 和 `` 这两个方法用于查看操作系统的内存使用
 ### 内存泄露排查
 `node-heapdump` 和 `node-memwatch`
 
-## 大内存应用
+### 大内存应用
 使用 stream 和 pipe 来实现大文件传输.
 
+## Buffer
+在引入 [TypedArray](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/TypedArray) 之前，JavaScript 语言没有用于读取或操作二进制数据流的机制。 Buffer 类是作为 Node.js API 的一部分引入的，用于在 TCP 流、文件系统操作、以及其他上下文中与八位字节流进行交互。
+
+现在可以使用 TypedArray， Buffer 类以更优化和更适合 Node.js 的方式实现了 Uint8Array API。
+
+Buffer 是一个像 Array 的对象,主要用于操作字节.
+
+### Buffer 结构
+Buffer 类的实例类似于整数数组，但对应于 V8 堆外部的固定大小的原始内存分配。 Buffer 的大小在创建时确定，且无法更改。
+
+Buffer 的元素为16进制的两位数, 即0到255的数值, Buffer 是二进制数据.
+
+```js
+var buf = new Buffer('床前明月光, 疑是地上霜; 举头望明月, 低头思故乡.', 'utf-8');
+console.log(buf);
+console.log(buf.length);
+```
+
+> 在Node 6.0以前，直接使用new Buffer，但是这种方式存在两个问题:
+>
+> - 参数复杂: 内存分配，还是内存分配+内容写入，需要根据参数来确定
+> - 安全隐患: 分配到的内存可能还存储着旧数据，这样就存在安全隐患
+
+```js
+new Buffer(number)            // Old
+Buffer.alloc(number)          // New
+
+new Buffer(string)            // Old
+Buffer.from(string)           // New
+
+new Buffer(string, encoding)  // Old
+Buffer.from(string, encoding) // New
+
+new Buffer(...arguments)      // Old
+Buffer.from(...arguments)     // New
+```
+
+Buffer 对象的内存分配不是在 V8 的堆内存中,而是在 Node 的 C++ 层面实现内存的申请的. 
+
+为了高效的使用申请来的内存, Node 采用了 [slab](https://zhuanlan.zhihu.com/p/36140017) 分配机制
+
+### Buffer 的转换
+可以用 `Buffer.isEncoding(encoding)` 来判断编码是否支持转换
+### Buffer 的拼接
+#### setEncoding() 和 string_decoder()
+`data += chunk` 等价于 `data = data.toString() + chunk.toString()`
+
+这段代码在英文环境下没有问题, 但是中文会出现乱码. 因为一个中文字符在  UTF-8 下占三个元素.
+
+可以添用 `readable.setEncoding(encoding)` 来设置编码的方法, 该方法的作用是让data事件传递的不再是一个 Buffer 对象, 而是编码侯的字符串.
+
+isEncoding 依赖 decoder 进行解码, decoder 对象来自于 string_decoder 模块 StringDecoder 的实例对象.
+
+这种办法只能处理部分编码, 所以不能从根本上解决问题.
+#### 正确拼接 Buffer
+下面是 Node 10.15.3 中 Buffer.concat() 的源码.
+```js
+function concat(list, length) {
+  // list 是要合并的多个 Buffer
+  var i;
+  if (!Array.isArray(list)) {
+    throw new ERR_INVALID_ARG_TYPE(`\'list\', [\'Array\', \'Buffer\', \'Uint8Array\'], list`);
+  }
+  if (list.length === 0)
+    return new FastBuffer();
+  if (length === undefined) {
+    length = 0;
+    for (i = 0; i < list.length; i++)
+      length += list[i].length;
+  } else {
+    // 右移零位的作用是去掉小数位
+    length = length >>> 0;
+  }
+  var buffer = Buffer.allocUnsafe(length);
+  var pos = 0;
+  for (i = 0; i < list.length; i++) {
+    var buf = list[i]; 
+    if (!isUint8Array(buf)) {
+      // TODO(BridgeAR): This should not be of type ERR_INVALID_ARG_TYPE.    
+      // Instead, find the proper error code for this.    
+      throw new ERR_INVALID_ARG_TYPE(``list[${i}]`, [\'Array\', \'Buffer\', \'Uint8Array\'], list[i]`);
+    }
+    _copy(buf, buffer, pos);
+    pos += buf.length;
+  }
+  // Note: `length` is always equal to `buffer.length` at this point  
+  if (pos < length) {
+    // Zero-fill the remaining bytes if the specified `length` was more than   
+    // the actual total length, i.e. if we have some remaining allocated bytes   
+    // there were not initialized.  
+    buffer.fill(0, pos, length);
+  }
+  return buffer;
+}
+```
+### Buffer 与性能
+使用 Buffer 比使用 string 性能有很大提升
+
+读取一个大文件时, `highWaterMark` 越大, 读取速度越快.
