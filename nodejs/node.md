@@ -289,3 +289,21 @@ TLS/SSL 实现过程
 ![](../imgs/https2.png)
 
 思路就是使用非对称个加密来传送之后要使用的对称加密的秘钥.
+
+## 构建 Web 应用
+### 基础功能
+- [RESTful API](https://www.zhihu.com/question/28557115)
+
+- 路径解析多用于静态文件服务器,还有一种比较常见的分发场景是根据路径来选择控制器, 它预设路径为控制器和行为的组合, 无需配置额外的路由信息.
+- 查询字符串
+- Cookie `req.headers.cookie`
+
+    Cookie: 由后端给出 `Set-Cookie: name=value; Path=/; Expires=xxx; Domain=.domain.com`
+
+    path: 表示这个Cookie影响到的路径
+
+    HttpOnly: 告知浏览器不允许通过 document.cookie 去修改这个 cookie 
+
+    Secure: 当 Secure 值为 true 时, 在 HTTP 中是无效的, 在 HTTPS 中才有效
+
+    Session: 为了解决性能问题和 Session 数据无法跨越进程共享的问题, 常用的方法是将 Session 集中化, 将原本可能分散咋多个进程里的数据, 统一转移到集中地数据存储中.
