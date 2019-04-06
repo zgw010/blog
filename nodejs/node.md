@@ -307,3 +307,35 @@ TLS/SSL 实现过程
     Secure: 当 Secure 值为 true 时, 在 HTTP 中是无效的, 在 HTTPS 中才有效
 
     Session: 为了解决性能问题和 Session 数据无法跨越进程共享的问题, 常用的方法是将 Session 集中化, 将原本可能分散咋多个进程里的数据, 统一转移到集中地数据存储中.
+
+## 进程
+同步 -> 复制进程 -> 多线程 -> 事件驱动
+### 多进程架构
+
+![](../imgs/master-worker.png)
+
+>Master-Worker模式是常用的并行模式之一，它的核心思想是，系统有两个进程协作工作：Master进程，负责接收和分配任务；Worker进程，负责处理子任务。当Worker进程将子任务处理完成后，结果返回给Master进程，由Master进程做归纳汇总，最后得到最终的结果.
+
+Node 使用 `child_process` 模块创建子进程
+
+> child_process.spawn() 方法异步地衍生子进程，且不阻塞 Node.js 事件循环。
+
+> child_process.spawnSync() 方法则以同步的方式提供等效功能，但会阻止事件循环直到衍生的进程退出或终止。
+>
+> child_process.exec(): 衍生一个 shell 并在该 shell 中运行命令，当完成时则将 stdout 和 stderr 传给回调函数。
+>
+> child_process.execFile(): 类似于 child_process.exec()，除了它默认会直接衍生命令且不首先衍生 shell。
+>
+> child_process.fork(): 衍生一个新的 Node.js 进程，并通过建立 IPC 通信通道来调用指定的模块，该通道允许在父进程与子进程之间发送消息。
+>
+> child_process.execSync(): child_process.exec() 的同步版本，会阻塞 Node.js 事件循环。
+>
+> child_process.execFileSync(): child_process.execFile() 的同步版本，会阻塞 Node.js 事件循环。
+
+在浏览器中主线程和工作线程( WebWorker )通过 `onmessage()` 和 `postMessage()` 进行通信.
+
+Node 也有相对应的做法, 通过 `fork()` 或者其他 API , 创建子进程侯, 为了实现父子进程的通信, 父进程与子进程之间会创建 IPC 通道. 通过 IPC 通道, 父子进程之间才能通过 message 和 send 传递消息.
+
+> 进程间通信
+>
+> IPC 的全程是 [Inter-Process Communication](https://zh.wikipedia.org/wiki/%E8%A1%8C%E7%A8%8B%E9%96%93%E9%80%9A%E8%A8%8A`)
