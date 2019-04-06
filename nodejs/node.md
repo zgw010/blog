@@ -239,3 +239,53 @@ function concat(list, length) {
 使用 Buffer 比使用 string 性能有很大提升
 
 读取一个大文件时, `highWaterMark` 越大, 读取速度越快.
+
+## [event](http://nodejs.cn/api/events.html) 事件触发器
+
+> 大多数 Node.js 核心 API 构建于惯用的异步事件驱动架构，其中某些类型的对象（又称触发器，Emitter）会触发命名事件来调用函数（又称监听器，Listener）。
+> 
+> 例如，net.Server 会在每次有新连接时触发事件，fs.ReadStream 会在打开文件时触发事件，stream会在数据可读时触发事件。
+> 
+> 所有能触发事件的对象都是 EventEmitter 类的实例。 这些对象有一个 eventEmitter.on() 函数，用于将一个或多个函数绑定到命名事件上。 事件的命名通常是驼峰式的字符串。
+> 
+> 当 EventEmitter 对象触发一个事件时，所有绑定在该事件上的函数都会被同步地调用。
+> 
+> 例子，一个简单的 EventEmitter 实例，绑定了一个监听器。 eventEmitter.on() 用于注册监听器， eventEmitter.emit() 用于触发事件。
+```js
+const EventEmitter = require('events');
+
+class MyEmitter extends EventEmitter {}
+
+const myEmitter = new MyEmitter();
+myEmitter.on('event', () => {
+  console.log('触发事件');
+});
+myEmitter.emit('event');
+```
+## 网络编程
+### Websocket
+WebSocket 客户端基于事件的编程模型和 Node 中自定义事件相差无几
+
+WebSocket 实现了客户端和服务器端的长连接, 而 Node 事件驱动的方式十分擅长与大量的客户端保持高并发连接.
+
+Websocket 与传统 HTTP 相比的好处:
+- 客户端和服务器端只建立一个 TCP 连接
+- 支持服务器端推送
+- 有更轻量级的协议头, 减少数据传送量
+
+### 网络服务与安全
+TLS/SSL 实现过程
+
+![](../imgs/https1.png)
+
+在建立安全连接之前, 客户端和服务器端之间需要互换公钥
+
+对称加密虽好. 但是网络中依然可能存在窃听的情况. 客户端和服务器端在交换公钥的过程中. 典型的例子是中问人攻击客户端的角色. 中间人对客户端扮演服务器端的角色. 对服务器端扮演因此客户端和服务器端几乎感受不到中间人的存在. 为了解决这种问题, 数据输过程中还需要对得到的公钥进行认证. 以确认得到的公钥是出自目标服务器. 
+
+为了解决这个问题, 引入了数字证书.
+
+一次完整的 HTTPS 连接如下图
+
+![](../imgs/https2.png)
+
+思路就是使用非对称个加密来传送之后要使用的对称加密的秘钥.
