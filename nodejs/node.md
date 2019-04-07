@@ -339,3 +339,84 @@ Node 也有相对应的做法, 通过 `fork()` 或者其他 API , 创建子进�
 > 进程间通信
 >
 > IPC 的全程是 [Inter-Process Communication](https://zh.wikipedia.org/wiki/%E8%A1%8C%E7%A8%8B%E9%96%93%E9%80%9A%E8%A8%8A`)
+
+#### 代理
+
+一个进程只能监听一个端口, 要想实现多个进程共同监听一个端口, 通常的做法是让每个进程监听不同的端口, 主进程监听 80 端口, 主进程对外接收所有的请求, 再将这些请求分别代理到不同的端口. 这样还能实现负载均衡.
+
+但是这种方式每收到一个连接就会用掉一个[文件描述符](https://zh.wikipedia.org/zh-cn/%E6%96%87%E4%BB%B6%E6%8F%8F%E8%BF%B0%E7%AC%A6), 因此代理方案中客户端连接到代理进程,代理进程连接到工作进程的过程需要用到两个文件描述符. 这显然是不合理的.
+
+为了解决这个问题, Node 中进程间可以发送句柄.
+
+发送句柄意味着什么? 在前一个问题中．我们可以去掉代理这种方案，使主进程接收到 socket 请求后，将这个 socke 直接发送给工作进程，而不是重新与工作进程之问建立新的 socket 连接来转发数据. 文件描述符浪费的问题可以通过这样的方式轻松解决.
+
+例子
+
+主进程代码
+```js
+var child = require('child_process').fork('child.js');
+
+// Open up the server object and send the handle.
+var server = require('net').createServer();
+server.on('connection', function (socket) {
+  socket.end('handled by parent\n');
+});
+server.listen(1337, function () {
+  child.send('server', server);
+});
+```
+
+子进程代码
+```js
+process.on('message', function (m, server) {
+  if (m === 'server') {
+    server.on('connection', function (socket) {
+      socket.end('handled by child\n');
+    });
+  }
+});
+```
+
+上面的代码, 父子进程都可能处理我们的客户端请求. 我们可以让所有请求都被子进程来处理.
+```js
+// parent.js
+var cp = require('child_process');
+var child1 = cp.fork('child.js');
+var child2 = cp.fork('child.js');
+
+// Open up the server object and send the handle.
+var server = require('net').createServer();
+server.listen(1337, function () {
+  child1.send('server', server);
+  child2.send('server', server);
+  server.close();
+});
+```
+
+```js
+// child.js
+var http = require('http');
+var server = http.createServer(function (req, res) {
+  res.writeHead(200, {'Content-Type': 'text/plain'});
+  res.end('handled by child, pid is ' + process.pid + '\n');
+});
+
+process.on('message', function (m, tcp) {
+  if (m === 'server') {
+    tcp.on('connection', function (socket) {
+      server.emit('connection', socket);
+    });
+  }
+});
+```
+![](../imgs/process1.png) => ![](../imgs/process2.png)
+
+如何做到端口共同监听的?
+
+我们独立启动的进程中. TCP 服务器端 socket 套接字的文件描述符并不相同．导致监听到相同的端口时会抛出异常.
+
+Node 底层对每个端口监听都设置了 SO_REUSEADDR 选项，这个选项的涵义是不同进程可以就相同的网卡和端口进行监听．这个服务器端套接字可以被不同的进程复用. 但独立启动的进程互相之间并不知道文件描述符．所以监听相同端口就会失败. 但对由 send() 发送的句柄还原出来的服务而言, 它们的文件描述符是相同的．所以监听相同端口不会引起异常.
+
+多个应用监听相同端口时，文件描述符同一时间只能被某个进程所用, 换言之就是网络请求向服务器端发送时，只有一个幸运的进程能够抢到连接．也就是说只有它能为这个请求进行服务. 这些进程服务是抢占式的
+
+### 集群稳定
