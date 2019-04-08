@@ -11,3 +11,5 @@
 [promise的实现(Q.js作者的解析)](https://juejin.im/entry/599968f6518825244630f809)
 
 [React 为什么要写 super(props)?](https://github.com/Tencent/omi/blob/master/tutorial/ctor-super-props.cn.md#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%88%91%E4%BB%AC%E5%86%99-superprops)
+
+[用 Shadow DOM v1 和 Custom Elements v1 实现一个原生 Web Component](https://juejin.im/post/5c1a401b6fb9a049c042fa07)
