@@ -420,3 +420,87 @@ Node 底层对每个端口监听都设置了 SO_REUSEADDR 选项，这个选项�
 多个应用监听相同端口时，文件描述符同一时间只能被某个进程所用, 换言之就是网络请求向服务器端发送时，只有一个幸运的进程能够抢到连接．也就是说只有它能为这个请求进行服务. 这些进程服务是抢占式的
 
 ### 集群稳定
+需要考虑一些细节
+
+- 性能
+- 多个工作进程的存活状态管理
+- 工作进程的平滑重启
+- 配置或者静态数据的动态重新载入
+- 其他细节
+
+#### [进程事件](http://nodejs.cn/api/child_process.html#child_process_class_childprocess)
+除了之前的 send() 和 message 之外, Node 还有如下事件.
+
+'close' 事件
+
+    当子进程的 stdio 流被关闭时触发。 与 'exit' 事件的区别是，多个进程可能共享同一 stdio 流。
+
+'disconnect' 事件
+
+    调用父进程的 subprocess.disconnect() 或子进程的 process.disconnect() 后会触发。 断开连接后就不能再发送或接收信息，且 subprocess.connected 属性会被设为 false。
+'error' 事件
+
+    当出现以下情况时触发 'error' 事件：
+
+    1. 无法衍生进程；
+    2. 无法杀死进程；
+    3. 向子进程发送信息失败。
+    发生错误后， 'exit' 事件可能会也可能不会触发。 如果同时监听了 'exit' 和 'error' 事件，可能会多次调用处理函数。
+'exit' 事件
+
+    - code <number> 子进程的退出码。
+    - signal <string> 终止子进程的信号。
+
+    当子进程结束后时触发。 如果进程退出，则 code 是进程的最终退出码，否则为 null。 如果进程是收到的信号而终止，则 signal 是信号的名称，否则为 null。 这两个值至少有一个是非空的。
+
+    当 'exit' 事件被触发时，子进程的 stdio 流可能依然是打开的。
+
+    Node.js 建立了 SIGINT 和 SIGTERM 的信号处理程序，且 Node.js 进程收到这些信号也不会立即终止。 Node.js 会执行一系列的清理操作后重新引发处理信号。
+
+上面的这些事件是父进程能进间听到的子进程相关的事件
+#### 自动重启
+我们可以监听子进程的 exit 事件来获知其退出的消息
+```js
+var fork = require('child_process').fork;
+var cpus = require('os').cpus();
+
+var server = require('net').createServer();
+server.listen(1337);
+
+var workers = {};
+var createWorker = function () {
+  var worker = fork(__dirname + '/worker.js');
+  worker.on('exit', function () {
+    console.log('Worker ' + worker.pid + ' exited.');
+    delete workers[worker.pid];
+    createWorker();
+  });
+  worker.send('server', server);
+  workers[worker.pid] = worker;
+  console.log('Create worker. pid: ' + worker.pid);
+};
+
+for (var i = 0; i < cpus.length; i++) {
+  createWorker();
+}
+// process 对象是一个全局变量，它提供有关当前 Node.js 进程的信息并对其进行控制。 作为一个全局变量，它始终可供 Node.js 应用程序使用，无需使用 require()。
+process.on('exit', function () {
+  for (var pid in workers) {
+    workers[pid].kill();
+  }
+});
+```
+#### 负载均衡
+Node 中的默认机制是抢占式的, Round-Robin(轮叫调度)是更合理的负载均衡策略.
+#### 状态共享
+在 Node 进程中不宜存放太多数据, 以为会加重垃圾回收的负担, 影响性能. 同时 Node 也不允许多个进程间共享数据. 可以使用第三方数据存储来实现.
+### Cluster
+Cluster 是对 child_process 和 net 模块的组合应用.
+单个 Node.js 实例运行在单个线程中。 为了充分利用多核系统，有时需要启用一组 Node.js 进程去处理负载任务。
+
+cluster 模块可以创建共享服务器端口的子进程。
+
+## 测试
+性能测试: benchmark(基准化分析法)
+
+压力测试: ab, siege, http_load
