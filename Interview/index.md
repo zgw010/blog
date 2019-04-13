@@ -25,7 +25,7 @@ HTML5提供的 `<DOCTYPE html>` 是标准模式，向后兼容的, 等同于开�
 
 ![box-model](https://leohxj.gitbooks.io/front-end-database/html-and-css-basic/assets/box-model.svg)
 
-CSS3中新增了一种盒模型计算方式：`box-sizing`熟悉。盒模型默认的值是`content-box`, 新增的值是`padding-box`和`border-box`，几种盒模型计算元素宽高的区别如下：
+CSS3中新增了一种盒模型计算方式：`box-sizing`属性。盒模型默认的值是`content-box`, 新增的值是`padding-box`和`border-box`，几种盒模型计算元素宽高的区别如下：
 
 **content-box（默认）**
 
