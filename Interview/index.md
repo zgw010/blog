@@ -77,6 +77,49 @@ CSS3中新增了一种盒模型计算方式：`box-sizing`属性。盒模型默�
 
 样式权重可以叠加, 比如 `id>class`
 
+
+## BFC
+**块级格式化上下文**，是一个独立的渲染区域，让处于 BFC 内部的元素与外部的元素相互隔离，使内外元素的定位不会相互影响。
+
+> IE下为 Layout，可通过 zoom:1 触发
+
+- 触发条件:
+  - 根元素
+  - `position: absolute/fixed`
+  - `display: inline-block / table`
+  - `float` 元素
+  - `ovevflow` !== `visible`
+- 规则:
+  - 属于同一个 BFC 的两个相邻 Box 垂直排列
+  - 属于同一个 BFC 的两个相邻 Box 的 margin 会发生重叠
+  - BFC 中子元素的 margin box 的左边， 与包含块 (BFC) border box的左边相接触 (子元素 absolute 除外)
+  - BFC 的区域不会与 float 的元素区域重叠
+  - 计算 BFC 的高度时，浮动子元素也参与计算
+  - 文字层不会被浮动层覆盖，环绕于周围
+- 应用:
+  - 阻止`margin`重叠
+  - 可以包含浮动元素 —— 清除内部浮动(清除浮动的原理是两个`div`都位于同一个 BFC 区域之中)
+  - 自适应两栏布局
+  - 可以阻止元素被浮动元素覆盖
+
+
+
+## 居中布局
+
+- 水平居中
+  - 行内元素: `text-align: center`
+  - 块级元素: `margin: 0 auto`
+  - `absolute + transform`
+  - `flex + justify-content: center`
+- 垂直居中
+  - `line-height: height`
+  - `absolute + transform`
+  - `flex + align-items: center`
+  - `table`
+- 水平垂直居中
+  - `absolute + transform`
+  - `flex + justify-content + align-items`
+
 ## CSS隐藏元素的几种方式及区别
 
 **display:none**
@@ -142,48 +185,7 @@ position 的常见四个属性值: relative，absolute，fixed，static。一般
 
 ## 清除浮动的方式有哪些?比较好的是哪一种?
 
-常用的一般为三种`.clearfix`, `clear:both`,`overflow:hidden`;
-
-比较好是 `.clearfix`,伪元素万金油版本...后两者有局限性..等会再扯
-
-```
-    .clearfix:after {
-      visibility: hidden;
-      display: block;
-      font-size: 0;
-      content: " ";
-      clear: both;
-      height: 0;
-    }
-    
-    
-<!--
-为毛没有 zoom ,_height 这些...IE6,7这类需要 csshack 不再我们考虑之内了
-.clearfix 还有另外一种写法...
--->
-
-.clearfix:before, .clearfix:after {
-	content:"";
-	display:table;
-}
-.clearfix:after{
-	clear:both;
-	overflow:hidden;
-}
-.clearfix{
-    zoom:1;
-}
-
-<!--
-用display:table 是为了避免外边距margin重叠导致的margin塌陷,
-内部元素默认会成为 table-cell 单元格的形式
--->
-    
-```
-
-`clear:both`:若是用在同一个容器内相邻元素上,那是贼好的...有时候在容器外就有些问题了, 比如相邻容器的包裹层元素塌陷
-
-`overflow:hidden`:这种若是用在同个容器内,可以形成 `BFC`避免浮动造成的元素塌陷
+https://juejin.im/post/59e7190bf265da4307025d91
 
 ## css3新特性
 
@@ -262,6 +264,16 @@ https://www.zhihu.com/question/21504052
 - null表示"没有对象"，即该处不应该有值。undefined表示"缺少值"，就是此处应该有一个值，但是还没有定义。
 
 null是一个表示"无"的对象，转为数值时为0；undefined是一个表示"无"的原始值，转为数值时为NaN。
+
+
+
+## typeof, instanceof, isPrototypeOf(), hasOwnProperty()
+
+instanceof运算符用于测试构造函数的prototype属性是否出现在对象的原型链中的任何位置
+
+isPrototypeOf() 方法用于测试一个对象是否存在于另一个对象的原型链上。
+
+hasOwnProperty() 方法会返回一个布尔值，指示对象自身属性中是否具有指定的属性.和 in 运算符不同，该方法会忽略掉那些从原型链上继承到的属性。
 
 ## 对数组 ['2018-03-05', '2013-06-12','2019-03-12','2018-03-05','2014-02-22'] 去重且排序
 
