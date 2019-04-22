@@ -1,4 +1,8 @@
 // promises-aplus-tests promise.js 测试
+
+// promise A+ 规范
+// https://promisesaplus.com/
+
 // 三种状态
 const PENDING = "pending";
 const RESOLVED = "resolved";
