@@ -55,38 +55,40 @@
   </script>
   {% endif %}
   <script>
-    console.log("hello");
-    const list = document.querySelector("#main_content");
-    const allH1 = document.querySelectorAll("h1");
-    const allH2 = document.querySelectorAll("h2");
-    const allH3 = document.querySelectorAll("h3");
-    for (let i = 0; i < allH2.length; i++) {
-      allH2[i].style.display = "none";
-    }
-    for (let i = 0; i < allH3.length; i++) {
-      allH3[i].style.display = "none";
-    }
-    for (let i = 0; i < allH1.length; i++) {
-      var triangle = document.createElement('div');
-      triangle.classList.add("triangle_close");
-      triangle.classList.add(`triangle-h1-${i}`);
-      list.insertBefore(triangle, allH1[i]);
-      triangle.addEventListener('click', function (e) {
-        var ptr = e.target.nextElementSibling.nextElementSibling;
-        e.target.classList.toggle('triangle_close');
-        if (!e.target.classList.toggle('triangle_open')) {
-          while (ptr && ptr.nodeName !== "H1" && ptr.nodeName !== "DIV") {
-            ptr.style.display = "none";
-            ptr = ptr.nextElementSibling;
+    // console.log("hello");
+    if (location.href === "https://zgw0.github.io/blog/") {
+      const list = document.querySelector("#main_content");
+      const allH1 = document.querySelectorAll("h1");
+      const allH2 = document.querySelectorAll("h2");
+      const allH3 = document.querySelectorAll("h3");
+      for (let i = 0; i < allH2.length; i++) {
+        allH2[i].style.display = "none";
+      }
+      for (let i = 0; i < allH3.length; i++) {
+        allH3[i].style.display = "none";
+      }
+      for (let i = 0; i < allH1.length; i++) {
+        var triangle = document.createElement('div');
+        triangle.classList.add("triangle_close");
+        triangle.classList.add(`triangle-h1-${i}`);
+        list.insertBefore(triangle, allH1[i]);
+        triangle.addEventListener('click', function (e) {
+          var ptr = e.target.nextElementSibling.nextElementSibling;
+          e.target.classList.toggle('triangle_close');
+          if (!e.target.classList.toggle('triangle_open')) {
+            while (ptr && ptr.nodeName !== "H1" && ptr.nodeName !== "DIV") {
+              ptr.style.display = "none";
+              ptr = ptr.nextElementSibling;
+            }
+          } else {
+            while (ptr && ptr.nodeName !== "H1" && ptr.nodeName !== "DIV") {
+              ptr.style.display = "block";
+              ptr = ptr.nextElementSibling;
+            }
           }
-        } else {
-          while (ptr && ptr.nodeName !== "H1" && ptr.nodeName !== "DIV") {
-            ptr.style.display = "block";
-            ptr = ptr.nextElementSibling;
-          }
-        }
 
-      })
+        })
+      }
     }
   </script>
 </body>
