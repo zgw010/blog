@@ -62,7 +62,8 @@
       var triangle = document.createElement('div');
       triangle.classList.add("triangle_close");
       triangle.classList.add(`triangle-h1-${i}`);
-      list.insertBefore(triangle, allH1[i])
+      list.insertBefore(triangle, allH1[i]);
+      triangle.addEventListener('click', console.log(this))
     }
   </script>
 </body>
