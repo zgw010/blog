@@ -1,3 +1,4 @@
+```js
 // promises-aplus-tests promise.js 测试
 
 // promise A+ 规范
@@ -181,3 +182,4 @@ MyPromise.deferred = MyPromise.defer = function(){
   return defer;
 }
 module.exports = MyPromise;
+```
