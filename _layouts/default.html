@@ -64,9 +64,8 @@
       triangle.classList.add(`triangle-h1-${i}`);
       list.insertBefore(triangle, allH1[i]);
       triangle.addEventListener('click', function(e){
-        console.log(e);
-        e.target.classList.remove('triangle_close');
-        e.target.classList.add('triangle_open');
+        e.target.classList.toggle('triangle_close');
+        e.target.classList.toggle('triangle_open');
       })
     }
   </script>
