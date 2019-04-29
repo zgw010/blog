@@ -64,15 +64,21 @@
       triangle.classList.add(`triangle-h1-${i}`);
       list.insertBefore(triangle, allH1[i]);
       triangle.addEventListener('click', function (e) {
+        var ptr = e.target.nextElementSibling;
         e.target.classList.toggle('triangle_close');
         if (e.target.classList.toggle('triangle_open')) {
-          while (e.target.nextElementSibling !== "H1")
+          while (ptr && ptr.nodeName !== "H1") {
             console.log(e.target.nextElementSibling.style);
-          e.target.nextElementSibling.style.display = "none";
+            ptr.style.display = "none";
+            ptr = ptr.nextElementSibling;
+          }
         } else {
-          while (e.target.nextElementSibling !== "H1")
+          while (ptr && ptr.nodeName !== "H1") {
             console.log(e.target.nextElementSibling.style);
-          e.target.nextElementSibling.style.display = "block";
+            ptr.style.display = "block";
+            ptr = ptr.nextElementSibling;
+          }
+
         }
 
       })
