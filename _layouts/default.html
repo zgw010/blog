@@ -55,7 +55,7 @@
   </script>
   {% endif %}
   <script>
-    console.log("helo", document.querySelectorAll("h1"));
+    console.log("helo1");
     const list = document.querySelector("#main_content");
     const allH1 = document.querySelectorAll("h1");
     for (let i = 0; i < allH1.length; i++) {
@@ -64,7 +64,7 @@
       triangle.classList.add(`triangle-h1-${i}`);
       list.insertBefore(triangle, allH1[i]);
       triangle.addEventListener('click', function (e) {
-        var ptr = e.target.nextElementSibling;
+        var ptr = e.target.nextElementSibling.nextElementSibling;
         e.target.classList.toggle('triangle_close');
         if (e.target.classList.toggle('triangle_open')) {
           while (ptr && ptr.nodeName !== "H1") {
