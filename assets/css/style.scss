@@ -17,23 +17,23 @@ p {
   position: absolute;
   width: 0;
   height: 0;
-  margin-left: -30px;
-  margin-top: 9px;
-  border: 16px solid transparent;
-  border-left: 29px solid black;
+  margin-left: -29px;
+  margin-top: 16px;
+  border: 13px solid transparent;
+  border-left: 23px solid black;
 }
 .triangle_close:hover {
-  cursor:pointer;
+  cursor: pointer;
 }
 .triangle_open {
   position: absolute;
   width: 0;
   height: 0;
-  margin-left: -37px;
-  margin-top: 12px;
-  border: 16px solid transparent;
-  border-top: 29px solid gray;
+  margin-left: -32px;
+  margin-top: 19px;
+  border: 13px solid transparent;
+  border-top: 23px solid gray;
 }
-.triangle_close:hover {
-  cursor:pointer;
+.triangle_open:hover {
+  cursor: pointer;
 }
