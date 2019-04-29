@@ -1,4 +1,3 @@
-# zgw's blog
 
 ## [promise](./JavaScript/promise.md)
 
