@@ -1,1 +1,3 @@
-# 个人学习感悟以及学习资源收集
+# zgw's blog
+
+## [JavaScript](./JavaScript)
