@@ -57,11 +57,14 @@
   <script>
     // console.log("hello");
     if (location.href === "https://zgw0.github.io/blog/") {
+      if (window.matchMedia('screen and (max-width: 480px)')) {
+        document.querySelectorAll(".inner")[1].style.padding = "20px 10px 20px 39px";
+      }
       const list = document.querySelector("#main_content");
       const allH1 = document.querySelectorAll("h1");
       const allH2 = document.querySelectorAll("h2");
       const allH3 = document.querySelectorAll("h3");
-      for (let i = 0; i < allH2.length; i++) {
+      for (let i = 1; i < allH2.length; i++) {
         allH2[i].style.display = "none";
       }
       for (let i = 0; i < allH3.length; i++) {
