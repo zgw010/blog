@@ -1,3 +1,5 @@
 # zgw's blog
 
-## [JavaScript](./JavaScript)
+## [promise](./JavaScript/promise.js)
+
+## [JavaScript 的相等判定规则](./JavaScript/===和==判定步骤.md)
