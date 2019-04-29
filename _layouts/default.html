@@ -55,7 +55,7 @@
   </script>
   {% endif %}
   <script>
-    console.log("helo1");
+    console.log("helo2");
     const list = document.querySelector("#main_content");
     const allH1 = document.querySelectorAll("h1");
     for (let i = 0; i < allH1.length; i++) {
@@ -67,13 +67,13 @@
         var ptr = e.target.nextElementSibling.nextElementSibling;
         e.target.classList.toggle('triangle_close');
         if (e.target.classList.toggle('triangle_open')) {
-          while (ptr && ptr.nodeName !== "H1") {
+          while (ptr && ptr.nodeName !== "H1" && ptr.nodeName !== "DIV") {
             console.log(e.target.nextElementSibling.style);
             ptr.style.display = "none";
             ptr = ptr.nextElementSibling;
           }
         } else {
-          while (ptr && ptr.nodeName !== "H1") {
+          while (ptr && ptr.nodeName !== "H1" && ptr.nodeName !== "DIV") {
             console.log(e.target.nextElementSibling.style);
             ptr.style.display = "block";
             ptr = ptr.nextElementSibling;
