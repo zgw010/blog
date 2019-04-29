@@ -22,6 +22,9 @@ p {
   border: 16px solid transparent;
   border-left: 29px solid black;
 }
+.triangle_close:hover {
+  cursor:pointer;
+}
 .triangle_open {
   position: absolute;
   width: 0;
@@ -30,4 +33,7 @@ p {
   margin-top: 12px;
   border: 16px solid transparent;
   border-top: 29px solid gray;
+}
+.triangle_close:hover {
+  cursor:pointer;
 }

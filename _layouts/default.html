@@ -55,9 +55,17 @@
   </script>
   {% endif %}
   <script>
-    console.log("helo2");
+    console.log("helo3");
     const list = document.querySelector("#main_content");
     const allH1 = document.querySelectorAll("h1");
+    const allH2 = document.querySelectorAll("h2");
+    const allH3 = document.querySelectorAll("h3");
+    for (let i = 0; i < allH2.length; i++) {
+      allH2[i].style.display = "none";
+    }
+    for (let i = 0; i < allH3.length; i++) {
+      allH3[i].style.display = "none";
+    }
     for (let i = 0; i < allH1.length; i++) {
       var triangle = document.createElement('div');
       triangle.classList.add("triangle_close");
@@ -66,7 +74,7 @@
       triangle.addEventListener('click', function (e) {
         var ptr = e.target.nextElementSibling.nextElementSibling;
         e.target.classList.toggle('triangle_close');
-        if (e.target.classList.toggle('triangle_open')) {
+        if (!e.target.classList.toggle('triangle_open')) {
           while (ptr && ptr.nodeName !== "H1" && ptr.nodeName !== "DIV") {
             console.log(e.target.nextElementSibling.style);
             ptr.style.display = "none";
@@ -78,7 +86,6 @@
             ptr.style.display = "block";
             ptr = ptr.nextElementSibling;
           }
-
         }
 
       })
