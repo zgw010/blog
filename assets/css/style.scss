@@ -13,3 +13,17 @@
 p {
   text-align: center;
 }
+.triangle_close {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border: 16px solid transparent;
+  border-left: 29px solid black;
+}
+.triangle_open {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border: 16px solid transparent;
+  border-left: 29px solid gray;
+}

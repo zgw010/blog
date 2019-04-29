@@ -56,6 +56,14 @@
   {% endif %}
   <script>
     console.log("helo", document.querySelectorAll("h1"));
+    const list = document.querySelector("#main_content");
+    const allH1 = document.querySelectorAll("h1");
+    for (let i = 0; i < allH1.length; i++) {
+      var triangle = document.createElement('div');
+      triangle.classList.add("triangle_close");
+      triangle.classList.add(`triangle-h1-${i}`);
+      list.insertBefore(newElement, allH1[i])
+    }
   </script>
 </body>
 
