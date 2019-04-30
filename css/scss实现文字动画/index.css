@@ -1,0 +1,318 @@
+@charset "UTF-8";
+@keyframes typed {
+  /* string 1, char 1 */
+  0%, 1.1645011655% {
+    content: "I";
+  }
+  /* string 1, char 2 */
+  1.1655011655%, 2.330002331% {
+    content: "I ";
+  }
+  /* string 1, char 3 */
+  2.331002331%, 3.4955034965% {
+    content: "I c";
+  }
+  /* string 1, char 4 */
+  3.4965034965%, 4.661004662% {
+    content: "I ca";
+  }
+  /* string 1, char 5 */
+  4.662004662%, 5.8265058275% {
+    content: "I can";
+  }
+  /* string 1, char 6 */
+  5.8275058275%, 6.992006993% {
+    content: "I can'";
+  }
+  /* string 1, char 7 */
+  6.993006993%, 8.1575081585% {
+    content: "I can't";
+  }
+  /* string 1, char 8 */
+  8.1585081585%, 9.323009324% {
+    content: "I can't ";
+  }
+  /* string 1, char 9 */
+  9.324009324%, 10.4885104895% {
+    content: "I can't g";
+  }
+  /* string 1, char 10 */
+  10.4895104895%, 11.654011655% {
+    content: "I can't ge";
+  }
+  /* string 1, char 11 */
+  11.655011655%, 12.8195128205% {
+    content: "I can't get";
+  }
+  /* string 1, char 12 */
+  12.8205128205%, 13.985013986% {
+    content: "I can't get ";
+  }
+  /* string 1, char 13 */
+  13.986013986%, 15.1505151515% {
+    content: "I can't get y";
+  }
+  /* string 1, char 14 */
+  15.1515151515%, 16.316016317% {
+    content: "I can't get yo";
+  }
+  /* string 1, char 15 */
+  16.317016317%, 17.4815174825% {
+    content: "I can't get you";
+  }
+  /* string 1, char 16 */
+  17.4825174825%, 18.647018648% {
+    content: "I can't get you ";
+  }
+  /* string 1, char 17 */
+  18.648018648%, 19.8125198135% {
+    content: "I can't get you o";
+  }
+  /* string 1, char 18 */
+  19.8135198135%, 20.978020979% {
+    content: "I can't get you ou";
+  }
+  /* string 1, char 19 */
+  20.979020979%, 22.1435221445% {
+    content: "I can't get you out";
+  }
+  /* string 1, char 20 */
+  22.1445221445%, 23.30902331% {
+    content: "I can't get you out ";
+  }
+  /* string 1, char 21 */
+  23.31002331%, 24.4745244755% {
+    content: "I can't get you out o";
+  }
+  /* string 1, char 22 */
+  24.4755244755%, 25.640025641% {
+    content: "I can't get you out of";
+  }
+  /* string 1, char 23 */
+  25.641025641%, 26.8055268065% {
+    content: "I can't get you out of ";
+  }
+  /* string 1, char 24 */
+  26.8065268065%, 27.971027972% {
+    content: "I can't get you out of m";
+  }
+  /* string 1, char 25 */
+  27.972027972%, 29.1365291375% {
+    content: "I can't get you out of my";
+  }
+  /* string 1, char 26 */
+  29.1375291375%, 30.302030303% {
+    content: "I can't get you out of my ";
+  }
+  /* string 1, char 27 */
+  30.303030303%, 31.4675314685% {
+    content: "I can't get you out of my m";
+  }
+  /* string 1, char 28 */
+  31.4685314685%, 32.633032634% {
+    content: "I can't get you out of my mi";
+  }
+  /* string 1, char 29 */
+  32.634032634%, 33.7985337995% {
+    content: "I can't get you out of my min";
+  }
+  /* string 1, char 30 */
+  33.7995337995%, 34.964034965% {
+    content: "I can't get you out of my mind";
+  }
+  /* string 1, char 31 */
+  34.965034965%, 60.371960373% {
+    content: "I can't get you out of my mind.";
+  }
+  /* string 1, char 32 */
+  60.372960373%, 61.3043613054% {
+    content: "I can't get you out of my mind";
+  }
+  /* string 1, char 33 */
+  61.3053613054%, 62.2367622378% {
+    content: "I can't get you out of my min";
+  }
+  /* string 1, char 34 */
+  62.2377622378%, 63.1691631702% {
+    content: "I can't get you out of my mi";
+  }
+  /* string 1, char 35 */
+  63.1701631702%, 64.1015641026% {
+    content: "I can't get you out of my m";
+  }
+  /* string 1, char 36 */
+  64.1025641026%, 65.033965035% {
+    content: "I can't get you out of my ";
+  }
+  /* string 1, char 37 */
+  65.034965035%, 65.9663659674% {
+    content: "I can't get you out of my";
+  }
+  /* string 1, char 38 */
+  65.9673659674%, 66.8987668998% {
+    content: "I can't get you out of m";
+  }
+  /* string 1, char 39 */
+  66.8997668998%, 67.8311678322% {
+    content: "I can't get you out of ";
+  }
+  /* string 1, char 40 */
+  67.8321678322%, 68.7635687646% {
+    content: "I can't get you out of";
+  }
+  /* string 1, char 41 */
+  68.7645687646%, 69.695969697% {
+    content: "I can't get you out o";
+  }
+  /* string 1, char 42 */
+  69.696969697%, 70.6283706294% {
+    content: "I can't get you out ";
+  }
+  /* string 1, char 43 */
+  70.6293706294%, 71.5607715618% {
+    content: "I can't get you out";
+  }
+  /* string 1, char 44 */
+  71.5617715618%, 72.4931724942% {
+    content: "I can't get you ou";
+  }
+  /* string 1, char 45 */
+  72.4941724942%, 73.4255734266% {
+    content: "I can't get you o";
+  }
+  /* string 1, char 46 */
+  73.4265734266%, 74.357974359% {
+    content: "I can't get you ";
+  }
+  /* string 1, char 47 */
+  74.358974359%, 75.2903752914% {
+    content: "I can't get you";
+  }
+  /* string 1, char 48 */
+  75.2913752914%, 76.2227762238% {
+    content: "I can't get yo";
+  }
+  /* string 1, char 49 */
+  76.2237762238%, 77.1551771562% {
+    content: "I can't get y";
+  }
+  /* string 1, char 50 */
+  77.1561771562%, 78.0875780886% {
+    content: "I can't get ";
+  }
+  /* string 1, char 51 */
+  78.0885780886%, 79.019979021% {
+    content: "I can't get";
+  }
+  /* string 1, char 52 */
+  79.020979021%, 79.9523799534% {
+    content: "I can't ge";
+  }
+  /* string 1, char 53 */
+  79.9533799534%, 80.8847808858% {
+    content: "I can't g";
+  }
+  /* string 1, char 54 */
+  80.8857808858%, 81.8171818182% {
+    content: "I can't ";
+  }
+  /* string 1, char 55 */
+  81.8181818182%, 82.7495827506% {
+    content: "I can't";
+  }
+  /* string 1, char 56 */
+  82.7505827506%, 83.681983683% {
+    content: "I can'";
+  }
+  /* string 1, char 57 */
+  83.682983683%, 84.6143846154% {
+    content: "I can";
+  }
+  /* string 1, char 58 */
+  84.6153846154%, 85.5467855478% {
+    content: "I ca";
+  }
+  /* string 1, char 59 */
+  85.5477855478%, 86.4791864802% {
+    content: "I c";
+  }
+  /* string 1, char 60 */
+  86.4801864802%, 87.4115874126% {
+    content: "I ";
+  }
+  /* string 1, char 61 */
+  87.4125874126%, 88.343988345% {
+    content: "I";
+  }
+  /* string 1, char 62 */
+  88.344988345%, 100% {
+    content: "​";
+  }
+}
+@keyframes beam-blink {
+  75% {
+    border-color: transparent;
+  }
+}
+* {
+  backface-visibility: hidden;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #000;
+  background-image: linear-gradient(to bottom, #000, #000 2px, #111 3px);
+  background-repeat: repeat-y;
+  background-position: center center;
+  background-size: cover, 100% 3px;
+  font-size: calc(10px + 2vw);
+  font-family: "VT323", monospace, sans-serif;
+  color: #f0c9cf;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+body::after {
+  content: "​";
+  position: relative;
+  top: -13px;
+  display: inline-block;
+  padding-right: 3px;
+  padding-right: calc(3px + 0.1vw);
+  border-right: 10px solid rgba(240, 201, 207, 0.75);
+  border-right: calc(1.1vw + 4px) solid rgba(240, 201, 207, 0.75);
+  text-shadow: 0 0 5px rgba(240, 201, 207, 0.75);
+  white-space: nowrap;
+  animation: typed 8.58s linear 1s infinite, beam-blink 1s infinite;
+}
+@media (max-width: 575px) {
+  body::after {
+    top: -33px;
+  }
+}
+/* body::before {
+  content: "1 strings / 31 chars / 8.58s duration";
+  display: block;
+  position: absolute;
+  bottom: -10px;
+  width: 100%;
+  padding: 3px 0;
+  background: #000;
+  color: #fff;
+  text-align: center;
+  font-size: 18px;
+  letter-spacing: 0.7px;
+  white-space: pre-wrap;
+} */
+/* @media (max-width: 575px) {
+  body::before {
+    content: "1 strings \a 31 chars \a 8.58s duration";
+  }
+} */
