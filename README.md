@@ -1,4 +1,4 @@
-### [blog](https://github.com/zgw0/blog)
+### [blog on github](https://github.com/zgw0/blog)
 # 前端
 
 ## HTML & CSS
