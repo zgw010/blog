@@ -34,4 +34,26 @@
 .triangle_open:hover {
   cursor: pointer;
 }
-
+#zgw0s-blog {
+  font-size: 24px;
+  text-align: center;
+}
+#zgw0s-blog a {
+  color: gray;
+  text-decoration: underline;
+}
+@media screen and (max-width: 480px) {
+  .triangle_close {
+    margin-top: 7px;
+    border: 12px solid transparent;
+    border-left: 20px solid black;
+  }
+  .triangle_open {
+    margin-top: 10px;
+    border: 12px solid transparent;
+    border-top: 20px solid gray;
+  }
+  #zgw0s-blog {
+    margin-right: 29px;
+  }
+}
