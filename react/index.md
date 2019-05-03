@@ -2,6 +2,10 @@ React的定位是一个构建用户界面的JavaScript类库，它使用JavaScri
 
 > We don’t make assumptions about the rest of your technology stack, so you can develop new features in React without rewriting existing code.
 
+React can do its job better if it “knows” about your components rather than if it only sees the React element tree after recursively callin
+
+React 使用了控制反转来调用组件, ( `<Form/>` 而不是 `Form()` )
+
 React核心内容只涉及如何定义组件，并不涉及具体的组件渲染（即输出用户界面），这需要额外引入渲染模块，以渲染React定义的组件：
 
 React核心内容也确实只包括定义组件相关的内容和API ，实际项目中，可以看到首先需要使用如下代码：
