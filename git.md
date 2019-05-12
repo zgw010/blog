@@ -1,27 +1,33 @@
-### git stash
-git stash 命令用来临时地保存一些还没有提交的工作，以便在分支上不需要提交未完成工作就可以清理工作目录。
-### git tag
-git tag 命令用来为代码历史记录中的某一个点指定一个永久的书签。 一般来说它用于发布相关事项。
-### git log
-git log 命令用来展示一个项目的可达历史记录，从最近的提交快照起。 默认情况下，它只显示你当前所在分支的历史记录，但是可以显示不同的甚至多个头记录或分支以供遍历。 此命令通常也用来在提交记录级别显示两个或多个分支之间的差异。
-### git merge <branch>
-branch为要被融合的分支
-### git fetch
-git fetch 命令与一个远程的仓库交互，并且将远程仓库中有但是在当前仓库的没有的所有信息拉取下来然后存储在你本地数据库中。
-### git pull
-git pull 命令基本上就是 git fetch 和 git merge 命令的组合体，Git 从你指定的远程仓库中抓取内容，然后马上尝试将其合并进你所在的分支中。
-### git diff
-当需要查看任意两棵树的差异时你可以使用 git diff 命令。 此命令可以查看你工作环境与你的暂存区的差异（git diff 默认的做法），你暂存区域与你最后提交之间的差异（git diff --staged），或者比较两个提交记录的差异（git diff master branchB）。
-### git difftool
-当你不想使用内置的 git diff 命令时。git difftool 可以用来简单地启动一个外部工具来为你展示两棵树之间的差异。
-### git reset
-git reset 命令主要用来根据你传递给动作的参数来执行撤销操作。 它可以移动 HEAD 指针并且可选的改变 index 或者暂存区，如果你使用 --hard 参数的话你甚至可以改变工作区。 如果错误地为这个命令附加后面的参数，你可能会丢失你的工作，所以在使用前你要确定你已经完全理解了它。
-### git rebase <branch>
-git rebase 命令基本是是一个自动化的 cherry-pick 命令。 它计算出一系列的提交，然后再以它们在其他地方以同样的顺序一个一个的 cherry-picks 出它们。
-把当前分支的基，变到branch分支上。
-### git revert
-git revert 命令本质上就是一个逆向的 git cherry-pick 操作。 它将你提交中的变更的以完全相反的方式的应用到一个新创建的提交中，本质上就是撤销或者倒转。
-### git cherry-pick
-可以选择某一个分支中的一个或几个commit(s)来进行操作。例如，假设我们有个稳定版本的分支，叫v2.0，另外还有个开发版本的分支v3.0，我们不能直接把两个分支合并，这样会导致稳定版本混乱，但是又想增加一个v3.0中的功能到v2.0中，这里就可以使用cherry-pick了。
+## .gitignore
+文件 .gitignore 的格式规范如下：
 
-git cherry-pick可以理解为”挑拣”提交，它会获取某一个分支的单笔提交，并作为一个新的提交引入到你当前分支上。 当我们需要在本地合入其他分支的提交时，如果我们不想对整个分支进行合并，而是只想将某一次提交合入到本地当前分支上，那么就要使用git cherry-pick了。
+- 所有空行或者以 ＃ 开头的行都会被 Git 忽略。
+
+- 可以使用标准的 glob 模式匹配。
+
+- 匹配模式可以以（/）开头防止递归。
+
+- 匹配模式可以以（/）结尾指定目录。
+
+- 要忽略指定模式以外的文件或目录，可以在模式前加上惊叹号（!）取反。
+
+```
+# no .a files
+*.a
+
+# but do track lib.a, even though you're ignoring .a files above
+!lib.a
+
+# only ignore the TODO file in the current directory, not subdir/TODO
+/TODO
+
+# ignore all files in the build/ directory
+build/
+
+# ignore doc/notes.txt, but not doc/server/arch.txt
+doc/*.txt
+
+# ignore all .pdf files in the doc/ directory
+doc/**/*.pdf
+```
+GitHub 有一个十分详细的针对数十种项目及语言的 .gitignore 文件列表: https://github.com/github/gitignore 
