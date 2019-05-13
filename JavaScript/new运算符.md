@@ -15,3 +15,16 @@
  obj.__proto__ = Base.prototype;
  Base.call(obj);
  ```
+
+
+-----
+新增一个 new 的实现
+```js
+function znew() {
+		const obj = new Object();
+		const fn = [].shift.call(arguments);
+    obj.__proto__ = fn.prototype;
+    const ret = fn.apply(obj, arguments);
+    return (typeof ret === 'object') ? ret : obj;
+};
+```
