@@ -19,3 +19,5 @@
 [从 Mixin 到高阶函数再到 Hooks ](https://juejin.im/post/5cad39b3f265da03502b1c0a)
 
 [webpack 入门](https://segmentfault.com/a/1190000006178770)
+
+[react fiber (en)](https://github.com/acdlite/react-fiber-architecture)
