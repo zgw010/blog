@@ -3,7 +3,7 @@ vscode 字体:Fira Code
 
 vscode setting sync
 ```
-GitHub Token: 19df9972c1e52b0818a1dee48af36f389b958730
+GitHub Token: cc1d5ac925ac99ee3ee3a36731d2f043592c2d48
 GitHub Gist: d047ec135d80ae85f04034f2319b2b82
 GitHub Gist Type: Secret
 
