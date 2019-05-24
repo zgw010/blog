@@ -3,7 +3,7 @@ vscode 字体:Fira Code
 
 vscode setting sync
 ```
-GitHub Token: cc1d5ac925ac99ee3ee3a36731d2f043592c2d48
+GitHub Token: github会自动删除共有仓库中的 Token, 所以不保存在这里了
 GitHub Gist: d047ec135d80ae85f04034f2319b2b82
 GitHub Gist Type: Secret
 
