@@ -6,31 +6,20 @@
   <summary>前端</summary>
   
 
-## 1. HTML & CSS
+    <h2>HTML & CSS</h2>
 
-## 2. JavaScript
+    <h2>JavaScript</h2>
 
-### [promise](./JavaScript/promise.md)
+      <p>[promise](./JavaScript/promise.md)</p>
 
-### [JavaScript 的相等判定规则](./JavaScript/===和==判定步骤.md)
+      <p>[JavaScript 的相等判定规则](./JavaScript/===和==判定步骤.md)/p>
 
-## 3. React
+    <h2>React</h2>
 
 </details>
 
 <details>
   <summary>算法</summary>
- 
-
-## 1. HTML & CSS
-
-## 2. JavaScript
-
-### [promise](./JavaScript/promise.md)
-
-### [JavaScript 的相等判定规则](./JavaScript/===和==判定步骤.md)
-
-## 3. React
 
 </details>
 
