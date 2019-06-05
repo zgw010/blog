@@ -10,21 +10,21 @@
  	 1、创建一个空对象，并且 this 变量引用该对象，同时还继承了该函数的原型。
    2、属性和方法被加入到 this 引用的对象中。
  	 3、新创建的对象由 this 所引用，并且最后隐式的返回 this 。
-```
+```js
  var obj  = {};
  obj.__proto__ = Base.prototype;
  Base.call(obj);
- ```
+```
 
 
 -----
 新增一个 new 的实现
 ```js
 function znew() {
-		const obj = new Object();
-		const fn = [].shift.call(arguments);
-    obj.__proto__ = fn.prototype;
-    const ret = fn.apply(obj, arguments);
-    return (typeof ret === 'object') ? ret : obj;
+  const obj = new Object();
+  const fn = [].shift.call(arguments);
+  obj.__proto__ = fn.prototype;
+  const ret = fn.apply(obj, arguments);
+  return (typeof ret === 'object') ? ret : obj;
 };
 ```
