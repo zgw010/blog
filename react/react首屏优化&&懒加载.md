@@ -39,6 +39,69 @@
 ## Code Splitting
 Code Splitting 可以帮你“懒加载”代码，以提高用户的加载体验，如果你没办法直接减少应用的体积，那么不妨尝试把应用从单个 bundle 拆分成单个 bundle + 多份动态代码的形式。
 
+- import() 代码分割
+
+使用之前：
+
+```js
+import { add } from './math';
+
+console.log(add(16, 26));
+```
+
+使用之后：
+
+```js
+import("./math").then(math => {
+  console.log(math.add(16, 26));
+});
+```
+
+使用 ` React.lazy` 可以像渲染常规组件一样处理动态引入组件
+
+```js
+const OtherComponent = React.lazy(() => import('./OtherComponent'));
+```
+
+Suspense
+
+如果在 MyComponent 渲染完成后，包含 OtherComponent 的模块还没有被加载完成，我们可以使用加载指示器为此组件做优雅降级。这里我们使用 Suspense 组件来解决。
+
+```js
+const OtherComponent = React.lazy(() => import('./OtherComponent'));
+
+function MyComponent() {
+  return (
+    <div>
+      <Suspense fallback={<div>Loading...</div>}>
+        <OtherComponent />
+      </Suspense>
+    </div>
+  );
+}
+```
+
+react 官方文档中给出了代码分割的一个最佳实践建议: 基于路由的代码分割
+
+```js
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import React, { Suspense, lazy } from 'react';
+
+const Home = lazy(() => import('./routes/Home'));
+const About = lazy(() => import('./routes/About'));
+
+const App = () => (
+  <Router>
+    <Suspense fallback={<div>Loading...</div>}>
+      <Switch>
+        <Route exact path="/" component={Home}/>
+        <Route path="/about" component={About}/>
+      </Switch>
+    </Suspense>
+  </Router>
+);
+```
+
 关于代码分割,react 官网有很详细的介绍: https://zh-hans.reactjs.org/docs/code-splitting.html
 ## LazyLoad
 
