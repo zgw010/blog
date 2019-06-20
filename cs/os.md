@@ -1033,3 +1033,8 @@ void semSignal(semaphore s)
 - mutex：对变量readcount互斥算术操作
 
 ## 死锁
+
+
+# 内存管理
+# I/0 管理和磁盘调度
+# 文件系统
