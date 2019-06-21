@@ -1032,6 +1032,246 @@ void semSignal(semaphore s)
 - readcount：统计同时读数据的Readers个数
 - mutex：对变量readcount互斥算术操作
 
+```c
+int readcount=0；
+semaphore mutex = 1, wsem=1;
+
+void reader() { 
+ while (1) {
+  P(mutex);
+   readcount++;
+   if (readcount==1) P(wsem); 
+  V(mutex);
+  READ;
+  P(mutex);
+   readcount--;
+   if (readcount==0) V(wsem);
+  V(mutex);
+  }
+}
+
+void writer() {
+ while (1) {
+   P(wsem);
+    WRITE;
+   V(wsem);
+ }
+}
+```
+
+##### 公平优先
+写过程中，若其它读者、写者到来，则按到达顺序处理。
+
+公平优先的变量设置
+- wsem：互斥信号量，用于Writers间互斥，Reader互斥Writers
+- readcount：统计同时读数据的Readers个数
+- mrc：对变量readcount互斥算术操作
+- wrsem：互斥信号量，确定Writer 、Reader请求顺序
+
+```c
+int readcount=0, semaphore mrc=l, wrsem=1, wsem=l;
+
+void reader() {
+  while (true) {
+    P(wrsem);
+    P(mrc);
+      readercount++;
+      if (readercount == 1)
+        P(wsem);
+    V(mrc);
+    V(wrsem);
+      READ;
+    P(mrc);
+      readercount--;
+      if (readercount == 0)
+        V(wsem);
+    V(mrc);
+  }
+}
+
+void writer() {
+  while (true) {
+    P(wrsem);
+    P(wsem);
+      WRITE;
+    V(wsem);
+    V(wrsem);
+  }
+}
+```
+##### 写者优先
+- 当至少有一个写者准备写数据时，则不再允许新的读者进入读数据。
+- 保证当有一个写进程声明想写时，不允许新的读进程访问数据区；
+- 解决了写者饥饿问题，但降低了并发程度，系统的并发性能较差。
+
+写者优先的变量设置
+- rsem：互斥信号量，当至少有一个写者申请写数据时互斥新的读者进入读数据。
+  
+  第一个写者受rsem影响，一旦有第一个写者，后续写者不受rsem其影响。但是读者需要在rsem上排队。
+- writecount：用于控制rsem信号量
+- mwc：对变量 writecount 互斥算术操作
+
+```c
+// v1
+int readcount = 0, writecount = 0;
+semaphore mrc=l, mwc= 1, wsem=1, rsem=l;
+
+void reader( ) {
+   while (1) {
+      P(rsem);
+       P(mrc);
+        readcount++;
+        if (readcount ==1) P(wsem);
+       V(mrc);
+      V(rsem)；
+     READ;
+     P(mrc);
+      readcount--;
+      if (readcount ==0) V(wsem);
+     V(mrc);
+   }
+}
+
+void writer( ) {
+  while (1) {
+    P(mwc);
+     writecount++;
+     if (writecount ==1) P(rsem);
+    V(mwc);
+    P(wsem);
+     WRITE;
+    V(wsem);
+    P(mwc);
+     writecount--;
+     if (writecount==0) V(rsem);
+    V(mwc);
+  }
+}
+```
+
+```c
+// v2
+int readcount=0,writecount=0; semaphore mrc=l, mwc= 1,z=1,wsem=1,rsem=l;
+
+void reader( ) {
+   while (1) {
+     P(z);
+      P(rsem);
+       P(mrc);
+        readcount++;
+        if (readcount ==1) P(wsem);
+       V(mrc);
+      V(rsem)；
+     V(z);
+     READ;
+     P(mrc);
+      readcount--;
+      if (readcount ==0) V(wsem);
+     V(mrc);
+   }
+}
+
+void writer( ) {
+  while (1) {
+    P(mwc);
+     writecount++;
+     if (writecount ==1) P(rsem);
+    V(mwc);
+    P(wsem);
+     WRITE;
+    V(wsem);
+    P(mwc);
+     writecount--;
+     if (writecount==0) V(rsem);
+    V(mwc);
+  }
+}
+
+```
+
+
+z信号量的作用：
+- 在rsem上不允许建造读进程的长队列，否则写进程将不能跳过这个队列.
+- 允许一个读进程在rsem上排队,其他读进程在信号量z上排队
+- P(z)和P(rsem)能否互换位置？
+
+### 管程
+#### 管程的概念(Monitor)
+- 一个管程定义了一个共享数据结构和能为并发进程所执行（在该数据结构上）的一组操作（过程），这组操作能同步进程和改变管程中的数据。（C. A. R. Hoare & Per Brinch Hansen）
+- 共享数据结构是对系统中共享资源的抽象
+- 对该共享数据结构的操作则定义为一组过程，通过调用这些过程实现对共享资源的申请、释放和其它操作。
+
+
+> 管程 (英语：Monitors，也称为监视器) 是一种程序结构，结构内的多个子程序（对象或模块）形成的多个工作线程互斥访问共享资源。这些共享资源一般是硬件设备或一群变量。管程实现了在一个时间点，最多只有一个线程在执行管程的某个子程序。与那些通过修改数据结构实现互斥访问的并发程序设计相比，管程实现很大程度上简化了程序设计。
+
+> 管程提供了一种机制，线程可以临时放弃互斥访问，等待某些条件得到满足后，重新获得执行权恢复它的互斥访问。
+
+> 维基百科
+#### 管程的引入
+- 信号量可以高效的实现进程间互斥与同步,但是:
+- 信号量的P、V操作可能分散在整个程序中，使用难度高。
+- 管程是一个程序设计语言结构，采用了集中式的进程同步方法，提供了与信号量同样的功能，但更易于控制。
+- 很多程序设计语言都支持管程，如Pascal、Java等。
+
+#### 管程的组成
+局部数据 + 过程 + 初始化序列
+
+一个管程包含:
+
+- 多个彼此可以交互并共享资源的线程
+- 多个与资源使用有关的变量
+- 一个互斥锁
+- 一个用来避免竞态条件的不变量
+#### 特点
+- 局部数据变量只能被管程的过程访问, 其余的外部过程都不能访问
+- 一个进程通过调用管程的一个过程进入管程
+- 在任何时候只能有一个进程正在管程执行, 调用管程的其他任何进程都被阻塞, 以等待管程可用
+
+#### 用管程实现进程同步
+- 管程通过使用条件变量提供对进程同步的支持。
+- 条件变量包含在管程中，只能在管程中访问。
+- 操作条件变量的两个函数
+
+```
+cwait(c) // 调用进程的执行在条件c上阻塞，管程可供其它进程使用。
+csignal(c) // 恢复在条件c上阻塞的一个进程，若不存在阻塞进程，则什么都不做。
+```
+
+#### 管程的结构
+
+![](https://s2.ax1x.com/2019/06/21/VzAktg.png)
+
+### 消息传递
+进程交互时需要满足两个基本要求
+
+- 同步, 可以保证互斥
+- 通信, 交换信息
+
+消息传递提供了上面两个功能
+
+- 两条通信原语      
+
+  - Send(destination,message)
+  - Receive(source,message)
+- 进程以消息的形式给指定的进程（目标）发送信息
+- 进程通过接收原语receive接收消息，接收原语中指明源进程和消息
+
+#### 消息传递的三种同步方式
+- 阻塞发送，阻塞接收
+- 不阻塞发送，阻塞接收
+- 不阻塞发送，不阻塞接收
+
+#### send和receive原语确定目标和原进程的方式有两类
+直接寻址和间接寻址
+
+#### 使用消息传递实现互斥
+- 多个并发执行的发送进程和接收进程共享一个邮箱box，且box的初始状态为仅包含一条“空消息”（好比进入临界区的令牌）；
+- 采用“不阻塞发送，阻塞接收”方式传递消息；
+- 若邮箱中存在一条消息，则允许一个进程进入临界区。
+- 若邮箱为空，则表明有一个进程位于临界区，其它试图进入临界区的进程必须阻塞。
+- 只要保证邮箱中最多只有一条消息，就能保证只允许一个进程进入临界区，从而实现进程互斥使用临界资源。
+
+
 ## 死锁
 
 
