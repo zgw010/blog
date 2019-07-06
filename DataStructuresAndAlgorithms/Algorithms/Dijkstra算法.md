@@ -94,3 +94,70 @@ int main()
 ```
 
 [c++ 优先队列的重载操作](https://blog.csdn.net/c20182030/article/details/70757660)
+
+
+[HDOJ 最短路](http://acm.hdu.edu.cn/showproblem.php?pid=2544)
+
+跟上一题几乎是一样的
+
+```c++
+#include <bits/stdc++.h>
+using namespace std;
+
+int g[105][105];
+int dist[105];
+bool visit[105]; // 用来标记是否是已经找到的有最短路径的点
+typedef pair<int, int> p;
+
+void dijkstra(int s, int n)
+{
+  dist[s] = 0;
+  priority_queue<p, vector<p>, greater<p>> pq;
+  pq.push(p(0, s));
+  while (!pq.empty())
+  {
+    p t = pq.top();
+    pq.pop();
+    int vi = t.second;
+    if (visit[vi])
+    {
+      continue;
+    }
+    visit[vi] = true;
+    for (int i = 1; i <= n; i++)
+    {
+      if (!visit[i] && dist[i] > dist[vi] + g[i][vi])
+      {
+        dist[i] = dist[vi] + g[i][vi];
+        pq.push(p(dist[i], i));
+      }
+    }
+  }
+  return;
+}
+
+int main()
+{
+  int n, m, a, b, c;
+  while (cin >> n >> m && (n != 0 || m != 0))
+  {
+    for (int i = 1; i <= n; i++)
+      for (int j = 1; j <= n; j++)
+        g[i][j] = 20000;
+    for (int i = 1; i <= n; i++)
+    {
+      g[i][i] = 0;
+      dist[i] = 20000;
+      visit[i] = false;
+    }
+    for (int i = 0; i < m; i++)
+    {
+      cin >> a >> b >> c;
+      if (c < g[a][b]) { g[a][b] = g[b][a] = c; } // 同一条路径可能有多个值, 选其中最短的一条
+    }
+    dijkstra(1, n);
+    if (dist[n] != 20000) cout << dist[n] << endl;
+  }
+  return 0;
+}
+```
