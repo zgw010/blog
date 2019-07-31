@@ -177,3 +177,8 @@ console.log(Symbol2.for("bar") === Symbol2.for("bar"));
 
 Symbol2("bar") === Symbol2("bar")
 ```
+
+引用:
+
+> https://github.com/mqyqingfeng/Blog/issues/87
+> http://es6.ruanyifeng.com/
