@@ -17,3 +17,17 @@
 - [Stacking context example 1](https://developer.mozilla.org/zh-TW/docs/Web/CSS/CSS_Positioning/Understanding_z_index/Stacking_context_example_1) : 在两层元素的第二层上使用 z-index
 - [Stacking context example 2](https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Understanding_z_index/Stacking_context_example_2) : 在两层元素的所有层上使用 z-index
 - [Stacking context example 3](https://developer.mozilla.org/zh-CN/docs/Web/Guide/CSS/Understanding_z_index/Stacking_context_example_3) : 在三层元素的第二层上使用 z-index
+
+层叠上下文由满足以下任意条件的元素形成
+- 根元素 (HTML),
+- z-index 值不为 "auto"的 绝对/相对定位，
+- 一个 z-index 值不为 "auto"的 flex 项目 (flex item)，即：父元素 display: flex|inline-flex，
+- opacity 属性值小于 1 的元素（参考 the specification for opacity），
+- transform 属性值不为 "none"的元素，
+- filter值不为“none”的元素，
+- position: fixed
+- mix-blend-mode 属性值不为 "normal"的元素，
+- perspective值不为“none”的元素，
+- isolation 属性被设置为 "isolate"的元素，
+- 在 will-change 中指定了任意 CSS 属性，即便你没有直接指定这些属性的值（参考 [这篇文章](https://dev.opera.com/articles/css-will-change-property/)）
+- -webkit-overflow-scrolling 属性被设置 "touch"的元素
