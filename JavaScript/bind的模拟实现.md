@@ -20,23 +20,18 @@
 ```js
 Function.prototype.bind2 = function (context) {
 
-    if (typeof this !== "function") {
-      throw new Error("Function.prototype.bind - what is trying to be bound is not callable");
-    }
+  if (typeof this !== "function") {
+    throw new Error("Function.prototype.bind - what is trying to be bound is not callable");
+  }
 
-    var self = this;
-    var args = Array.prototype.slice.call(arguments, 1);
-
-    var fNOP = function () {};
-
-    var fBound = function () {
-        var bindArgs = Array.prototype.slice.call(arguments);
-        return self.apply(this instanceof fNOP ? this : context, args.concat(bindArgs));
-    }
-
-    fNOP.prototype = this.prototype;
-    fBound.prototype = new fNOP();
-    return fBound;
+  const arg1 = [...arguments].slice(1);
+  const _this = this;
+  const bindHelper = function () {
+    const arg2 = [...arguments];
+    return _this.apply(this instanceof bindHelper ? this : context, [...arg1, ...arg2]);
+  }
+  bindHelper.prototype = Object.create(this.prototype)
+  return bindHelper;
 }
 ```
 
