@@ -145,3 +145,11 @@ Vary HTTP 响应头决定了对于后续的请求头，如何判断是请求一�
 
 505 HTTP Version Not Supported:
 服务器不支持请求中所使用的HTTP协议版本。
+
+# HTTPS
+
+直接补上两个链接
+
+[图解SSL/TLS协议](http://www.ruanyifeng.com/blog/2014/09/illustration-ssl.html)
+
+[SSL/TLS协议运行机制的概述](https://www.ruanyifeng.com/blog/2014/02/ssl_tls.html)
