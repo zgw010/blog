@@ -21,3 +21,5 @@
 [webpack 入门](https://segmentfault.com/a/1190000006178770)
 
 [react fiber (en)](https://github.com/acdlite/react-fiber-architecture)
+
+[JavaScript 中的沙箱](https://juejin.im/post/5d8d76b8e51d45781332e928)
