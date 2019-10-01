@@ -21,7 +21,7 @@
 Function.prototype.bind2 = function (context) {
 
   if (typeof this !== "function") {
-    throw new Error("Function.prototype.bind - what is trying to be bound is not callable");
+    throw new Error("error");
   }
 
   const arg1 = [...arguments].slice(1);
