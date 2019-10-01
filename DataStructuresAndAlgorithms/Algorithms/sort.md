@@ -135,6 +135,57 @@ function insertionSort(array) {
 
 ## 归并排序
 
+```java
+package sortdemo;
+
+import java.util.Arrays;
+
+/**
+ * Created by chengxiao on 2016/12/8.
+ */
+public class MergeSort {
+    public static void main(String []args){
+        int []arr = {9,8,7,6,5,4,3,2,1};
+        sort(arr);
+        System.out.println(Arrays.toString(arr));
+    }
+    public static void sort(int []arr){
+        int []temp = new int[arr.length];//在排序前，先建好一个长度等于原数组长度的临时数组，避免递归中频繁开辟空间
+        sort(arr,0,arr.length-1,temp);
+    }
+    private static void sort(int[] arr,int left,int right,int []temp){
+        if(left<right){
+            int mid = (left+right)/2;
+            sort(arr,left,mid,temp);//左边归并排序，使得左子序列有序
+            sort(arr,mid+1,right,temp);//右边归并排序，使得右子序列有序
+            merge(arr,left,mid,right,temp);//将两个有序子数组合并操作
+        }
+    }
+    private static void merge(int[] arr,int left,int mid,int right,int[] temp){
+        int i = left;//左序列指针
+        int j = mid+1;//右序列指针
+        int t = 0;//临时数组指针
+        while (i<=mid && j<=right){
+            if(arr[i]<=arr[j]){
+                temp[t++] = arr[i++];
+            }else {
+                temp[t++] = arr[j++];
+            }
+        }
+        while(i<=mid){//将左边剩余元素填充进temp中
+            temp[t++] = arr[i++];
+        }
+        while(j<=right){//将右序列剩余元素填充进temp中
+            temp[t++] = arr[j++];
+        }
+        t = 0;
+        //将temp中的元素全部拷贝到原数组中
+        while(left <= right){
+            arr[left++] = temp[t++];
+        }
+    }
+}
+```
 归并排序是另一种不同的排序方法，因为归并排序使用了递归分治的思想，所以理解起来比较容易。其基本思想是，先递归划分子问题，然后合并结果。把待排序列看成由两个有序的子序列，然后合并两个子序列，然后把子序列看成由两个有序序列。。。。。倒着来看，其实就是先两两合并，然后四四合并。。。最终形成有序序列。空间复杂度为O(n)，时间复杂度为O(nlogn)。
 
 ![img](https://camo.githubusercontent.com/29cee6111676d88550fc6c9671c558d77731a691/687474703a2f2f7374617469632e636f646563656f2e636f6d2f696d616765732f323031362f30332f64663834373833363264396234323931336530323265666639346434336562342e706e67)
