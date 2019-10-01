@@ -23,3 +23,5 @@
 [react fiber (en)](https://github.com/acdlite/react-fiber-architecture)
 
 [JavaScript 中的沙箱](https://juejin.im/post/5d8d76b8e51d45781332e928)
+
+[浏览器允许的并发请求资源数是多少？](https://www.zhihu.com/question/20474326)
