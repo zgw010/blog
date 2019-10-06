@@ -1,3 +1,44 @@
+## 前置知识
+### React 不把 setState 设为同步的原因:
+1. 即使 state 是同步的更新, props 不是(在父组件重新渲染之前, 你不知道新的 props)
+
+React 提供的对象 state, props, refs 在内部是彼此一致的. 这就表明即使是一颗老的树, 你引用的值都是一致的, 这里我的描述不够到位, 看下面的例子:
+
+```js
+console.log(this.state.value) // 0
+this.setState({ value: this.state.value + 1 });
+console.log(this.state.value) // 1
+this.setState({ value: this.state.value + 1 });
+console.log(this.state.value) // 2
+```
+
+现在有一个新的需求 value 的值需要共享给多个兄弟组件, 所以我们要把 state 变量提升到它的父组件
+
+```js
+-this.setState({ value: this.state.value + 1 });
++this.props.onIncrement(); // Does the same thing in a parent
+```
+
+这时问题就出现了
+```js
+console.log(this.props.value) // 0
+this.props.onIncrement();
+console.log(this.props.value) // 0
+this.props.onIncrement();
+console.log(this.props.value) // 0
+```
+
+state 会被立即改变, 但是 props 需要等到父组件重新渲染
+
+还有更微妙的情况, 我们有时需要使用 props 和 state 一起来生成 我们的 state 
+
+所以 React 中选择了异步的更新 state 和 props (In React, both this.state and this.props update only after the reconciliation and flushing)
+
+2. 可以并发(指能处理多个同时性活动的能力，并发事件之间不一定要同一时刻发生。)的更新
+
+这个是为了之后的异步渲染(React could assign different priorities to setState() calls depending on where they’re coming from: an event handler, a network response, an animation, etc.)做铺垫
+
+
 *基于 React 版本 v 15.6*
 
 ```js
@@ -331,7 +372,8 @@ unstable_batchedUpdates(() => {
 
 
 
-
+## 补充阅读
+1. [你真的理解setState吗？](https://juejin.im/post/5b45c57c51882519790c7441#comment)
 
 
 
